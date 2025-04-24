@@ -11,19 +11,13 @@ const packageSize = 100;
 const page = 1;
 
 function App() {
-  const [info, setInfo] = useState([]);
   const [art, setArt] = useState<Record[]>([]);
-
   const harvardMuseumApiFetch = useCallback(async () => {
     const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
     const fetchHarvard = await fetch(urlHarvard);
     const artHarvard = await fetchHarvard.json();
-    setInfo(artHarvard.info);
     setArt(artHarvard.records);
   }, []);
-
-  console.log(info);
-  console.log(art);
 
   useEffect(() => {
     harvardMuseumApiFetch();
