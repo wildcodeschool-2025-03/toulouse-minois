@@ -14,7 +14,7 @@ function App() {
   const [info, setInfo] = useState([]);
   const [art, setArt] = useState<Record[]>([]);
 
-  const HarvardMuseumApiFetch = useCallback(async () => {
+  const harvardMuseumApiFetch = useCallback(async () => {
     const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
     const fetchHarvard = await fetch(urlHarvard);
     const artHarvard = await fetchHarvard.json();
@@ -26,8 +26,8 @@ function App() {
   console.log(art);
 
   useEffect(() => {
-    HarvardMuseumApiFetch();
-  }, [HarvardMuseumApiFetch]);
+    harvardMuseumApiFetch();
+  }, [harvardMuseumApiFetch]);
 
   return (
     <HarvardMuseumAPIContext.Provider value={{ art, setArt }}>
