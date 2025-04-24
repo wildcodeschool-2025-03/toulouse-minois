@@ -18,7 +18,7 @@ function Gallery() {
             <div key={art.objectid} className="case">
               <img src={art.primaryimageurl} alt={art.title} />
               <p>{art.title}</p>
-              <p>{art.dimensions}</p>
+              <p>{art.dimensions} test</p>
             </div>
           );
         }
