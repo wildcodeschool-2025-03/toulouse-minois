@@ -1,17 +1,29 @@
 import "./App.css";
+import "./pages/Home";
 
 function App() {
   return (
     <>
       <header>
-        <h1 className="logo">JS Monorepo</h1>
+        <h1 className="logo">Minois</h1>
       </header>
 
-      <nav className="navbar">
+      <main className="text-box"> </main>
+
+      <footer>
+        Développé par la&nbsp;
+        <a
+          href="https://www.wildcodeschool.com/"
+          className="wcs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Wild Code School
+        </a>
         <ul>
           <li>
             <a
-              href="https://github.com/WildCodeSchool/create-js-monorepo"
+              href="https://github.com/wildcodeschool-2025-03/toulouse-minois.git"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -33,26 +45,6 @@ function App() {
             </a>
           </li>
         </ul>
-      </nav>
-
-      <main className="text-box">
-        <hgroup className="block-primary">
-          <h2 className="block-primary-main">JS Monorepo</h2>
-          <p className="block-primary-sub">Votre framework JavaScript</p>
-        </hgroup>
-        <p>Vous avez lu le README ?</p>
-      </main>
-
-      <footer>
-        Développé par la&nbsp;
-        <a
-          href="https://www.wildcodeschool.com/"
-          className="wcs"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Wild Code School
-        </a>
       </footer>
     </>
   );
