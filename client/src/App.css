@@ -13,15 +13,22 @@ body {
 }
 
 #root {
-  height: 100vh;
-  background-image: url("./assets/images/background.webp");
-  background-size: cover;
+  height: 100%;
+  background-color: burlywood;
   background-position: top;
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-rows: 1fr;
+  grid-template-columns: auto auto auto;
   align-content: start;
   padding: 1rem;
+}
+
+.case {
+  display: inline-block;
+  width: 15vw;
+
+  img {
+    width: 15vw;
+  }
 }
 
 header {
