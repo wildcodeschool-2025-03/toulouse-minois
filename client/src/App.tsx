@@ -23,8 +23,24 @@ function App() {
     setArt(artHarvard.records);
   }, []);
 
-  console.log(info);
-  console.log(art);
+  const selectRandomPortrait = useCallback(() => {
+    if (art?.length > 0) {
+      const randomIndex = Math.floor(Math.random() * art.length);
+      setDailyPortrait(art[randomIndex]);
+    }
+  }, [art]);
+
+  useEffect(() => {
+    selectRandomPortrait();
+    const interval = setInterval(
+      () => {
+        selectRandomPortrait();
+      },
+      15 * 60 * 1000,
+    );
+
+    return () => clearInterval(interval);
+  }, [selectRandomPortrait]);
 
   useEffect(() => {
     harvardMuseumApiFetch();
@@ -55,6 +71,7 @@ function App() {
 
   return (
     <HarvardMuseumAPIContext.Provider value={{ dailyPortrait, artMemo }}>
+
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>
