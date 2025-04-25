@@ -5,25 +5,22 @@ function Home() {
   const context = useContext(HarvardMuseumAPIContext);
 
   if (!context) {
-    return <p>Error: Context not available</p>;
+    return <p>Loading...</p>;
   }
 
   const { dailyPortrait } = context;
 
-  if (!dailyPortrait) {
-    return <p>Loading...</p>;
-  }
   return (
     <main>
       <div>
         <h1>Portrait of the Day</h1>
         <img
-          src={dailyPortrait.primaryimageurl}
-          alt={dailyPortrait.title}
+          src={dailyPortrait?.primaryimageurl}
+          alt={dailyPortrait?.title}
           style={{ maxWidth: "100%", height: "auto" }}
         />
-        <h2>{dailyPortrait.title}</h2>
-        <p>Artist: {dailyPortrait.people?.[0]?.name || "Unknown"}</p>
+        <h2>{dailyPortrait?.title}</h2>
+        <p>Artist: {dailyPortrait?.people?.[0]?.name || "Unknown"}</p>
       </div>
       <div>
         <h2>Bienvenue sur Minois</h2>

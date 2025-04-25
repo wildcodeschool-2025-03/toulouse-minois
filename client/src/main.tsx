@@ -1,7 +1,6 @@
 // Import necessary modules from React and React Router
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router";
-import "./App.css";
 
 /* ************************************************************************* */
 // Import the main app component
