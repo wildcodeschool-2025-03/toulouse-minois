@@ -11,14 +11,14 @@ function Gallery() {
   const { art } = context;
 
   return (
-    <div>
+    <div className="gallery">
       {art.map((art) => {
         if (art.primaryimageurl) {
           return (
             <div key={art.objectid} className="case">
               <img src={art.primaryimageurl} alt={art.title} />
               <p>{art.title}</p>
-              <p>{art.dimensions} test</p>
+              <p>{art.people?.[0]?.name}</p>
             </div>
           );
         }
