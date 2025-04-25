@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, Outlet } from "react-router";
 import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
 import type { Record } from "./types/HarvardType.tsx";
@@ -26,6 +26,14 @@ function App() {
   console.log(info);
   console.log(art);
 
+  useEffect(() => {
+    harvardMuseumApiFetch();
+  }, [harvardMuseumApiFetch]);
+
+  const artMemo = useMemo(() => {
+    return art;
+  }, [art]);
+
   const selectRandomPortrait = useCallback(() => {
     if (art?.length > 0) {
       const randomIndex = Math.floor(Math.random() * art.length);
@@ -45,12 +53,8 @@ function App() {
     return () => clearInterval(interval);
   }, [selectRandomPortrait]);
 
-  useEffect(() => {
-    harvardMuseumApiFetch();
-  }, [harvardMuseumApiFetch]);
-
   return (
-    <HarvardMuseumAPIContext.Provider value={{ art, setArt, dailyPortrait }}>
+    <HarvardMuseumAPIContext.Provider value={{ dailyPortrait, artMemo }}>
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>
