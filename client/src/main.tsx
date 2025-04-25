@@ -12,7 +12,7 @@ import Gallery from "./pages/Gallery.tsx";
 
 // import About from "./pages/About";
 // import Contact from "./pages/Contact";
-
+import Home from "./pages/Home";
 /* ************************************************************************* */
 
 // Create router configuration with routes
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <App />,
+        element: <Home />,
       },
       {
         path: "/gallery",
