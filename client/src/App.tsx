@@ -54,7 +54,7 @@ function App() {
   }, [selectRandomPortrait]);
 
   return (
-    <HarvardMuseumAPIContext.Provider value={{ dailyPortrait, artMemo }}>
+    <HarvardMuseumAPIContext.Provider value={{ dailyPortrait, artMemo, art }}>
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>
