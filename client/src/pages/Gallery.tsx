@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
-
 function Gallery() {
   const context = useContext(HarvardMuseumAPIContext);
 
@@ -8,17 +7,18 @@ function Gallery() {
     return <div>Loading...</div>;
   }
 
-  const { art } = context;
+  const { artMemo } = context;
 
   return (
-    <div>
-      {art.map((art) => {
-        if (art.primaryimageurl) {
+    <div className="gallery">
+      {artMemo.map((artMemo) => {
+        if (artMemo.primaryimageurl) {
+          console.log(artMemo.people?.[0]?.name);
           return (
-            <div key={art.objectid} className="case">
-              <img src={art.primaryimageurl} alt={art.title} />
-              <p>{art.title}</p>
-              <p>{art.dimensions} test</p>
+            <div key={artMemo.objectid} className="case">
+              <img src={artMemo.primaryimageurl} alt={artMemo.title} />
+              <p className={"b"}>{artMemo.title}</p>
+              <p>{artMemo.people?.[0]?.name}</p>
             </div>
           );
         }

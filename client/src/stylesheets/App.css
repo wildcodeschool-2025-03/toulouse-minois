@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jost:ital,wght@0,300;1,300&family=Kumbh+Sans:wght@100..900&family=Lusitana:wght@400;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: black;
+}
+
+body {
+  font-family: "Kumbh Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12pt;
+  line-height: 1.7;
+  color: #eee;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+  background-position: top;
+}
+
+header {
+  grid-column: 1 / 2;
+  grid-row: 1;
+}
+
+footer {
+  grid-column: -2 / -1;
+  grid-row: 1;
+  align-self: end;
+  text-align: right;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  align-content: center;
+  justify-content: space-around;
+  margin: 2vh auto;
+  color: firebrick;
+
+  .b {
+    font-weight: 600;
+  }
+}
+
+nav {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-right: 3vw;
+  height: 50px;
+  gap: 50px;
+
+  a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: "Kumbh Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13pt;
+    letter-spacing: 1px;
+  }
+
+  p {
+    justify-self: start;
+    font-family: "EB Garamond", serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 18pt;
+    flex: 20;
+    margin-left: 2vw;
+  }
+}
+
+.case {
+  display: inline-block;
+  width: 15vw;
+
+  img {
+    width: 15vw;
+  }
+}

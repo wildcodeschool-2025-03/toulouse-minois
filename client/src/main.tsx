@@ -1,23 +1,31 @@
 // Import necessary modules from React and React Router
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router";
-import "./App.css";
 
 /* ************************************************************************* */
 // Import the main app component
 import App from "./App.tsx";
+import FilterGallery from "./components/FilterGallery/filter-gallery.tsx";
 import Gallery from "./pages/Gallery.tsx";
+import Home from "./pages/Home.tsx";
 
 // Import additional components for new routes
 // Try creating these components in the "pages" folder
 
 // import About from "./pages/About";
 // import Contact from "./pages/Contact";
-import Home from "./pages/Home";
 /* ************************************************************************* */
 
 // Create router configuration with routes
 // You can add more routes as you build out your app!
+
+const GalleryWrapper = () => (
+  <>
+    <FilterGallery />
+    <Gallery />
+  </>
+);
+
 const router = createBrowserRouter([
   {
     element: <App />,
@@ -28,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/gallery",
-        element: <Gallery />,
+        element: <GalleryWrapper />,
       },
     ],
   },
