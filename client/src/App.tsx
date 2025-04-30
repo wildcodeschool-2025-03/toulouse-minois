@@ -13,7 +13,7 @@ const packageSize = 100;
 const page = 1;
 
 function App() {
-  const [info, setInfo] = useState([]);
+  const [_, setInfo] = useState([]);
   const [art, setArt] = useState<Record[]>([]);
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
 
@@ -25,19 +25,20 @@ function App() {
     setArt(artHarvard.records);
   }, []);
 
-  useEffect(() => {
-    harvardMuseumApiFetch();
-  }, [harvardMuseumApiFetch]);
-
-  const artMemo = useMemo(() => {
-    return art;
-  }, [art]);
 
   const selectRandomPortrait = useCallback(() => {
     if (art?.length > 0) {
       const randomIndex = Math.floor(Math.random() * art.length);
       setDailyPortrait(art[randomIndex]);
     }
+  }, [art]);
+
+  useEffect(() => {
+    harvardMuseumApiFetch();
+  }, [harvardMuseumApiFetch]);
+
+  const artMemo = useMemo(() => {
+    return art;
   }, [art]);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ function App() {
 
   return (
     <HarvardMuseumAPIContext value={{ dailyPortrait, artMemo, art, setArt }}>
+
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>
