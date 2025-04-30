@@ -13,7 +13,6 @@ function Gallery() {
     <div className="gallery">
       {artMemo.map((artMemo) => {
         if (artMemo.primaryimageurl) {
-          console.log(artMemo.people?.[0]?.name);
           return (
             <div key={artMemo.objectid} className="case">
               <img src={artMemo.primaryimageurl} alt={artMemo.title} />
