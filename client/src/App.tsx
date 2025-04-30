@@ -25,9 +25,6 @@ function App() {
     setArt(artHarvard.records);
   }, []);
 
-  console.log(info);
-  console.log(art);
-
   useEffect(() => {
     harvardMuseumApiFetch();
   }, [harvardMuseumApiFetch]);
