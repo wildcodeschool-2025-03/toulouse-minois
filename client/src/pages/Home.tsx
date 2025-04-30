@@ -26,24 +26,21 @@ function Home() {
         <p>Artist: {dailyPortrait.people?.[0]?.name || "Unknown"}</p>
       </div>
       <div>
-        <h2>Bienvenue sur Minois</h2>
+        <h2>Welcome to Minois</h2>
         <p>
-          Si vous avez atterri ici c'est que vous aimez l'art, et plus
-          particulièrement les portraits dans l'art et ça tombe bien nous aussi.
-          A travers les collections de grands musées que nous avons
-          selectionner, découvrer ou redécouvrer les portraits créer par divers
-          artistes dans le temps et l'histoire. De nombreuses techniques comme
-          la photographie, l'aquarelle, la peinture, ... sont utiliés et
-          témoignent d'une expression multiple qui tourne toujours autour d'un
-          même sujet, le portrait. Reflet de l'âme, le portrait est alors le
-          témoin d'un temps d'une histoire, d'un brin de vie figé qui évoque,
-          suggère et bouleverse parfois. Le portrait aussi figé puisse il être
-          reste ainsi vivant par les émotions qu'il fait émergé. Il est parfois
-          garant du souvenir qui peut se perdre au fil du temps et des époques.
-          Un défi pour les artistes qui capturent l'expression d'un visage,
-          cherchant à garantir toute l'authenticité de la personne et de
-          l'instant. Ami.e.s curieux et curieuse ce site est fait pour vous et
-          le plaisir de découvrir ou se redécouvrir.{"."}
+          If you are on this website, that's you love art and specificly
+          portrait. Cool we too! Through great museum collections that we
+          selected, discover or rediscover portraits created by a lot of artists
+          during time and history. A lost of tecnicals like photography,
+          watercolor, paint, ... are used and testifies multitude of expression
+          who turns around the same subject, portrait. Soul reflect, portrait is
+          time and history witness of a little bit of life, fixed who evoke,
+          suggest and sometimes upset. The portrait, however frozen it may be,
+          stay alive by emotions is emerging. Sometimes he can be a legacy
+          guardian. A challenge for artists who capture face expressions, try to
+          ensure moment person authenticity. Curious friends this website is for
+          you and for your discover pleasure.
+          {"."}
         </p>
       </div>
     </main>
