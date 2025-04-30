@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jost:ital,wght@0,300;1,300&family=Kumbh+Sans:wght@100..900&family=Lusitana:wght@400;700&display=swap");
+
+* {
+  font-family: "Kumbh Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14pt;
+  color: black;
+}
+
+.search-body {
+  position: relative;
+}
+
+.search-button-body {
+  width: 15%;
+  margin-left: 2vw;
+}
+
+.search-button {
+  display: inline-flex;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: lightgray;
+}
+
+.search-menu {
+  display: flex;
+}
+
+.search-category {
+  position: relative;
+}
+
+.category-button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  color: #374151;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.category-button:hover {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+.dropdown-submenu {
+  margin-left: 0.75rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.checkbox-label {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.checkbox-input {
+  margin-right: 0.5rem;
+}
+
+.dropdown-submenu {
+  margin-left: 0.75rem;
+  list-style: none;
+  padding-left: 0;
+  max-height: 8rem;
+  overflow-y: auto;
+}

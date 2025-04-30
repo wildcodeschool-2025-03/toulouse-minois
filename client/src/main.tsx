@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 /* ************************************************************************* */
 // Import the main app component
 import App from "./App.tsx";
+import FilterGallery from "./components/FilterGallery/filter-gallery.tsx";
 import Gallery from "./pages/Gallery.tsx";
 import Home from "./pages/Home.tsx";
 
@@ -18,6 +19,14 @@ import Home from "./pages/Home.tsx";
 
 // Create router configuration with routes
 // You can add more routes as you build out your app!
+
+const GalleryWrapper = () => (
+  <>
+    <FilterGallery />
+    <Gallery />
+  </>
+);
+
 const router = createBrowserRouter([
   {
     element: <App />,
@@ -28,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/gallery",
-        element: <Gallery />,
+        element: <GalleryWrapper />,
       },
     ],
   },

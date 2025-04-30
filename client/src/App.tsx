@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, Outlet } from "react-router";
 import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
 import type { Record } from "./types/HarvardType.tsx";
-import "./App.css";
+import "./stylesheets/normalize.css";
+import "./stylesheets/App.css";
+import "./stylesheets/filter.css";
 
 const subject = "portrait";
 const classificationA = "Paintings";
@@ -54,7 +56,7 @@ function App() {
   }, [selectRandomPortrait]);
 
   return (
-    <HarvardMuseumAPIContext.Provider value={{ dailyPortrait, artMemo, art }}>
+    <HarvardMuseumAPIContext value={{ dailyPortrait, artMemo, art }}>
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>
@@ -63,7 +65,7 @@ function App() {
       <main>
         <Outlet />
       </main>
-    </HarvardMuseumAPIContext.Provider>
+    </HarvardMuseumAPIContext>
   );
 }
 
