@@ -25,3 +25,4 @@ dist-ssr
 *.sw?
 
 TestApiChicago.tsx
+\src\pages\Test.tsx
