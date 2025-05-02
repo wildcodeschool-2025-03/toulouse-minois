@@ -25,6 +25,7 @@ function App() {
     setArt(artHarvard.records);
   }, []);
 
+
   const selectRandomPortrait = useCallback(() => {
     if (art?.length > 0) {
       const randomIndex = Math.floor(Math.random() * art.length);
@@ -53,7 +54,8 @@ function App() {
   }, [selectRandomPortrait]);
 
   return (
-    <HarvardMuseumAPIContext value={{ dailyPortrait, artMemo, art }}>
+    <HarvardMuseumAPIContext value={{ dailyPortrait, artMemo, art, setArt }}>
+
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>

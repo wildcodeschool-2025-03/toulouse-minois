@@ -6,6 +6,7 @@ const HarvardMuseumAPIContext = createContext<{
   artMemo: Record[];
   setArt?: React.Dispatch<React.SetStateAction<Record[]>>;
   dailyPortrait: Record;
+  artMemo: Record[];
 } | null>(null);
 
 export default HarvardMuseumAPIContext;
