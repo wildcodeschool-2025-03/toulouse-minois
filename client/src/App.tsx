@@ -26,19 +26,19 @@ function App() {
   }, []);
 
 
-  const selectRandomPortrait = useCallback(() => {
-    if (art?.length > 0) {
-      const randomIndex = Math.floor(Math.random() * art.length);
-      setDailyPortrait(art[randomIndex]);
-    }
-  }, [art]);
-
   useEffect(() => {
     harvardMuseumApiFetch();
   }, [harvardMuseumApiFetch]);
 
   const artMemo = useMemo(() => {
     return art;
+  }, [art]);
+
+  const selectRandomPortrait = useCallback(() => {
+    if (art?.length > 0) {
+      const randomIndex = Math.floor(Math.random() * art.length);
+      setDailyPortrait(art[randomIndex]);
+    }
   }, [art]);
 
   useEffect(() => {
@@ -54,8 +54,10 @@ function App() {
   }, [selectRandomPortrait]);
 
   return (
-    <HarvardMuseumAPIContext value={{ dailyPortrait, artMemo, art, setArt }}>
-
+    <HarvardMuseumAPIContext
+      value={{ dailyPortrait, artMemo, art, setArt, checkbox: [] }}
+    >
+      {" "}
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>
