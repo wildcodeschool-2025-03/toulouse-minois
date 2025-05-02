@@ -60,6 +60,7 @@ function App() {
         <p>Minois</p>
         <Link to="/">Home</Link>
         <Link to="/Gallery">Gallery</Link>
+        <Link to="/About">About</Link>
       </nav>
       <main>
         <Outlet />
