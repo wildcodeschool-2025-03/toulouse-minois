@@ -9,7 +9,7 @@ import FilterGallery from "./components/FilterGallery/filter-gallery.tsx";
 import FilterProvider from "./components/FilterProvider/FilterProvider.tsx";
 import Gallery from "./pages/Gallery.tsx";
 import Home from "./pages/Home.tsx";
-/*import Test from "./pages/Test.tsx";*/
+import About from "./pages/About.tsx";
 
 // Import additional components for new routes
 // Try creating these components in the "pages" folder
@@ -39,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/gallery",
         element: <GalleryWrapper />,
+      },
+      {
+        path: "/About",
+        element: <About />,
       },
     ],
   },
