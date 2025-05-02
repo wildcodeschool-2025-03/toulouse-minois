@@ -13,7 +13,7 @@ const packageSize = 100;
 const page = 1;
 
 function App() {
-  const [info, setInfo] = useState([]);
+  const [_, setInfo] = useState([]);
   const [art, setArt] = useState<Record[]>([]);
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
 
@@ -25,8 +25,6 @@ function App() {
     setArt(artHarvard.records);
   }, []);
 
-  console.log(info);
-  console.log(art);
 
   useEffect(() => {
     harvardMuseumApiFetch();
