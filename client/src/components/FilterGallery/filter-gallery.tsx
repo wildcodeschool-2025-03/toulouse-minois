@@ -37,14 +37,45 @@ function FilterGallery(): React.ReactElement {
   const categoryOptions: CategoryOptions = {
     category: [],
     classification: [
-      ...new Set(artMemo.map((art) => art.classification).filter(Boolean)),
+      ...new Set(
+        artMemo
+          .filter((art) => art.primaryimageurl)
+          .map((art) => art.classification)
+          .filter(Boolean),
+      ),
     ],
     artist: [
-      ...new Set(artMemo.map((art) => art.people?.[0]?.name).filter(Boolean)),
+      ...new Set(
+        artMemo
+          .filter((art) => art.primaryimageurl)
+          .map((art) => art.people?.[0]?.name)
+          .filter(Boolean),
+      ),
     ],
-    century: [...new Set(artMemo.map((art) => art.century).filter(Boolean))],
-    medium: [...new Set(artMemo.map((art) => art.medium).filter(Boolean))],
-    culture: [...new Set(artMemo.map((art) => art.culture).filter(Boolean))],
+    century: [
+      ...new Set(
+        artMemo
+          .filter((art) => art.primaryimageurl)
+          .map((art) => art.century)
+          .filter(Boolean),
+      ),
+    ],
+    medium: [
+      ...new Set(
+        artMemo
+          .filter((art) => art.primaryimageurl)
+          .map((art) => art.medium)
+          .filter(Boolean),
+      ),
+    ],
+    culture: [
+      ...new Set(
+        artMemo
+          .filter((art) => art.primaryimageurl)
+          .map((art) => art.culture)
+          .filter(Boolean),
+      ),
+    ],
   };
 
   return (
