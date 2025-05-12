@@ -11,13 +11,13 @@ function Home() {
   const { dailyPortrait } = context;
 
   return (
-    <main>
+    <main style={{ margin: "2vw" }}>
       <div>
         <h1>Portrait of the Day</h1>
         <img
           src={dailyPortrait?.primaryimageurl}
           alt={dailyPortrait?.title}
-          style={{ maxWidth: "100%", height: "auto" }}
+          style={{ height: "50vh" }}
         />
         <h2>{dailyPortrait?.title}</h2>
         <p>Artist: {dailyPortrait?.people?.[0]?.name || "Unknown"}</p>

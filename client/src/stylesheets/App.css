@@ -18,6 +18,10 @@ body {
   margin: 0;
 }
 
+main {
+  padding-top: 5vh;
+}
+
 #root {
   height: 100%;
   background-position: top;
@@ -50,6 +54,10 @@ footer {
 
 nav {
   display: flex;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  background-color: white;
   justify-content: end;
   align-items: center;
   padding-right: 3vw;

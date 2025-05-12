@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { useFilter } from "../../context/FilterContext";
+import { Link } from "react-router";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
 
 function Gallery() {
   const context = useContext(HarvardMuseumAPIContext);
-  const { filters } = useFilter(); // Accès à l'état filters
+
+  const { filters } = useFilter();
 
   if (!context) {
     return <div>Loading...</div>;
@@ -69,15 +71,24 @@ function Gallery() {
 
   console.log("Résultats filtrés :", filteredArtMemo);
 
+
+  const generateSlug = (artistName?: string) => {
+    return artistName ? artistName.toLowerCase().replace(/[\s-']/g, '-') : 'unknown-artist';
+  };
+
   return (
     <div className="gallery">
       {filteredArtMemo.map((art) => {
         if (art.primaryimageurl) {
+          const artistSlug = generateSlug(art.people?.[0]?.name);
+          const artworkId = art.objectid;
           return (
             <div key={art.objectid} className="case">
-              <img src={art.primaryimageurl} alt={art.title} />
-              <p className={"b"}>{art.title}</p>
-              <p>{art.people?.[0]?.name}</p>
+              <Link to={`/${artistSlug}/${artworkId}`}>
+                <img src={art.primaryimageurl} alt={art.title} />
+                <p className={"b"}>{art.title}</p>
+                <p>{art.people?.[0]?.name}</p>
+              </Link>
             </div>
           );
         }
