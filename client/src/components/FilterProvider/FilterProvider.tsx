@@ -22,7 +22,7 @@ export const FilterProvider: React.FC<Props> = ({ children }) => {
     if (existingUserId) {
       setUserId(existingUserId);
     } else {
-      const newUserId = Math.random().toString(36).substring(2, 15); // Générer un ID aléatoire
+      const newUserId = Math.random().toString(36).substring(2, 15);
       Cookies.set(USER_ID_COOKIE_NAME, newUserId, {
         expires: COOKIE_EXPIRATION_DAYS,
       });
