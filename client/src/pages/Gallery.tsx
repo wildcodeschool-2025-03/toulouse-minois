@@ -5,8 +5,8 @@ import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
 
 function Gallery() {
   const context = useContext(HarvardMuseumAPIContext);
-  const { filters } = useFilter();
 
+  const { filters } = useFilter();
 
   if (!context) {
     return <div>Loading...</div>;
@@ -70,6 +70,7 @@ function Gallery() {
   });
 
   console.log("Résultats filtrés :", filteredArtMemo);
+
 
   const generateSlug = (artistName?: string) => {
     return artistName ? artistName.toLowerCase().replace(/[\s-']/g, '-') : 'unknown-artist';
