@@ -73,8 +73,8 @@ function App() {
           <Link to="/About">About</Link>
         </nav>
         <main>
-          {isArtLoading ? <p>Chargement des œuvres...</p> : null}
-          {isArtError ? <p>Erreur lors du chargement des œuvres: {artError?.message}</p> : null}
+          {isArtLoading ? <p>Minute Papillon</p> : null}
+          {isArtError ? <p>Flute alors ! {artError?.message}</p> : null}
           {!isArtLoading && !isArtError && <Outlet />}
         </main>
         <ReactQueryDevtools initialIsOpen={false} />
