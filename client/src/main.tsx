@@ -66,7 +66,13 @@ const router = createBrowserRouter([
 /* ************************************************************************* */
 
 // Create a QueryClient instance
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // Désactive le rechargement à la réactivation
+    },
+  },
+});
 
 // Find the root element in the HTML document
 const rootElement = document.getElementById("root");
