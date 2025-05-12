@@ -32,9 +32,7 @@ function App() {
   });
 
   const art = artHarvardData?.records || [];
-  const info = artHarvardData?.info;
-
-  console.log(info);
+  // const info = artHarvardData?.info;
 
   const artMemo = useMemo(() => {
     return art;
