@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jost:ital,wght@0,300;1,300&family=Kumbh+Sans:wght@100..900&family=Lusitana:wght@400;700&display=swap");
+
+* {
+  font-family: "Kumbh Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14pt;
+  color: black;
+}
+
+.search-body {
+  position: relative;
+}
+
+.search-button-body {
+  width: 10%;
+  border: solid 3px;
+  margin-left: 50px;
+  margin-top: 2vh;
+}
+
+.search-button {
+  display: inline-flex;
+  background-color: transparent;
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0 4px;
+  margin: 10px;
+}
+
+.search-button span {
+  position: relative;
+  display: inline-block;
+  -webkit-transition: -webkit-transform 0.3s;
+  -moz-transition: -moz-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+.search-button span::before {
+  position: absolute;
+  top: 100%;
+  content: attr(data-hover);
+  font-weight: 700;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.search-button:hover span,
+.search-button:focus span {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+
+.search-reset {
+  display: block;
+  margin: -29px 0 2vh 14vw;
+  width: fit-content;
+  text-align: left;
+  font-size: 10pt;
+  font-weight: 800;
+  color: #374151;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.search-menu {
+  display: flex;
+}
+
+.search-category {
+  position: relative;
+  margin-left: 2vw;
+}
+
+.category-button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  color: #374151;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.category-button:hover {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+.dropdown-submenu {
+  margin-left: 0.75rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.checkbox-label {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.checkbox-input {
+  margin-right: 0.5rem;
+}
+
+.dropdown-submenu {
+  margin-left: 0.75rem;
+  list-style: none;
+  padding-left: 0;
+  max-height: 8rem;
+  overflow-y: auto;
+}

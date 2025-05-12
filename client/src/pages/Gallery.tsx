@@ -1,8 +1,12 @@
 import { useContext } from "react";
+import { useFilter } from "../../context/FilterContext";
+import { Link } from "react-router";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
 
 function Gallery() {
   const context = useContext(HarvardMuseumAPIContext);
+
+  const { filters } = useFilter();
 
   if (!context) {
     return <div>Loading...</div>;
@@ -10,19 +14,82 @@ function Gallery() {
 
   const { artMemo } = context;
 
+  const filteredArtMemo = artMemo.filter((art) => {
+    let matchesAllCategories = true;
+
+    for (const category in filters) {
+      const selectedOptions = filters[category];
+      let artValue: string | string[] | undefined;
+
+      if (category === "artist") {
+        artValue = art.people?.[0]?.name;
+      } else if (
+        typeof art[category as keyof typeof art] === "string" ||
+        Array.isArray(art[category as keyof typeof art])
+      ) {
+        artValue = art[category as keyof typeof art] as
+          | string
+          | string[]
+          | undefined;
+      } else {
+        artValue = undefined;
+      }
+
+      if (
+        selectedOptions &&
+        Object.keys(selectedOptions).some((key) => selectedOptions[key])
+      ) {
+        let matchesCategory = false;
+        for (const option in selectedOptions) {
+          if (selectedOptions[option]) {
+            if (
+              typeof artValue === "string" &&
+              artValue?.toLowerCase() === option.toLowerCase()
+            ) {
+              matchesCategory = true;
+              break;
+            }
+            if (
+              Array.isArray(artValue) &&
+              artValue.some(
+                (item) => item?.toLowerCase() === option.toLowerCase(),
+              )
+            ) {
+              matchesCategory = true;
+              break;
+            }
+          }
+        }
+        if (!matchesCategory) {
+          matchesAllCategories = false;
+          break;
+        }
+      }
+    }
+    return matchesAllCategories;
+  });
+
+  console.log("Résultats filtrés :", filteredArtMemo);
+
+
+  const generateSlug = (artistName?: string) => {
+    return artistName ? artistName.toLowerCase().replace(/[\s-']/g, '-') : 'unknown-artist';
+  };
+
   return (
     <div className="gallery">
-      {artMemo.map((artMemo) => {
-        if (artMemo.primaryimageurl) {
+      {filteredArtMemo.map((art) => {
+          const artistSlug = generateSlug(art.people?.[0]?.name);
+          const artworkId = art.objectid;
           return (
-            <div key={artMemo.objectid} className="case">
-              <img src={artMemo.primaryimageurl} alt={artMemo.title} />
-              <p>{artMemo.title}</p>
-              <p>{artMemo.people?.[0]?.name}</p>
+            <div key={art.objectid} className="case">
+              <Link to={`/${artistSlug}/${artworkId}`}>
+                <img src={art.primaryimageurl} alt={art.title} />
+                <p className={"b"}>{art.title}</p>
+                <p>{art.people?.[0]?.name}</p>
+              </Link>
             </div>
           );
-        }
-        return null;
       })}
     </div>
   );
