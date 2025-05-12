@@ -79,7 +79,6 @@ function Gallery() {
   return (
     <div className="gallery">
       {filteredArtMemo.map((art) => {
-        if (art.primaryimageurl) {
           const artistSlug = generateSlug(art.people?.[0]?.name);
           const artworkId = art.objectid;
           return (
@@ -91,8 +90,6 @@ function Gallery() {
               </Link>
             </div>
           );
-        }
-        return null;
       })}
     </div>
   );

@@ -18,13 +18,14 @@ const page = 1;
 async function fetchHarvardAPI() {
   const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
   const { data } = await redaxios.get(urlHarvard);
-  return data;
+  const validArt = data.records.filter((record: Record) => record.primaryimageurl);
+  return { ...data, records: validArt };
 }
 
 function App() {
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
 
-  const { isLoading: isArtLoading, isError: isArtError, data: artHarvardData, error: artError, refetch: refetchArt } = useQuery({
+  const { isLoading: isArtLoading, isError: isArtError, data: artHarvardData, error: artError} = useQuery({
     queryKey: ['harvardArt', subject, classificationA, classificationB, packageSize, page],
     queryFn: fetchHarvardAPI,
     staleTime: 15 * 60 * 1000,

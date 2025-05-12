@@ -39,7 +39,6 @@ function FilterGallery(): React.ReactElement {
     classification: [
       ...new Set(
         artMemo
-          .filter((art) => art.primaryimageurl)
           .map((art) => art.classification)
           .filter(Boolean),
       ),
@@ -47,7 +46,6 @@ function FilterGallery(): React.ReactElement {
     artist: [
       ...new Set(
         artMemo
-          .filter((art) => art.primaryimageurl)
           .map((art) => art.people?.[0]?.name)
           .filter(Boolean),
       ),
@@ -55,7 +53,6 @@ function FilterGallery(): React.ReactElement {
     century: [
       ...new Set(
         artMemo
-          .filter((art) => art.primaryimageurl)
           .map((art) => art.century)
           .filter(Boolean),
       ),
@@ -63,7 +60,6 @@ function FilterGallery(): React.ReactElement {
     medium: [
       ...new Set(
         artMemo
-          .filter((art) => art.primaryimageurl)
           .map((art) => art.medium)
           .filter(Boolean),
       ),
@@ -71,7 +67,6 @@ function FilterGallery(): React.ReactElement {
     culture: [
       ...new Set(
         artMemo
-          .filter((art) => art.primaryimageurl)
           .map((art) => art.culture)
           .filter(Boolean),
       ),
