@@ -32,7 +32,8 @@ function App() {
   });
 
   const art = artHarvardData?.records || [];
-  //const info = artHarvardData?.info;
+  const info = artHarvardData?.info;
+  console.log(info);
 
   const artMemo = useMemo(() => {
     return art;
@@ -57,7 +58,6 @@ function App() {
     return () => clearInterval(interval);
   }, [selectRandomPortrait]);
 
-
   return (
       <HarvardMuseumAPIContext
           value={{
@@ -70,8 +70,8 @@ function App() {
         <nav>
           <p>Minois</p>
           <Link to="/">Home</Link>
-          <Link to="/Gallery">Gallery</Link>
-          <Link to="/About">About</Link>
+          <Link to="/gallery">Gallery</Link>
+          <Link to="/about">About</Link>
         </nav>
         <main>
           {isArtLoading ? <p>Minute Papillon</p> : null}

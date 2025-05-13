@@ -13,6 +13,7 @@ import Home from "./pages/Home.tsx";
 import About from "./pages/About.tsx";
 import ArtDetail from "./pages/ArtDetail.tsx";
 import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
+import {useContext} from "react";
 
 // Create router configuration with routes
 const GalleryWrapper = () => (
@@ -41,23 +42,7 @@ const router = createBrowserRouter([
       {
         path: "/:artist/:id",
         element: <ArtDetail />,
-        loader: async ({ params }) => {
-          const { id } = params;
-          const artworkId = Number.parseInt(id, 10);
 
-          const contextValue = HarvardMuseumAPIContext.artMemo;
-
-          if (contextValue?.artMemo) {
-            const artwork = contextValue.artMemo.find((art) => art.objectid === artworkId);
-
-            if (artwork) {
-              return { artwork };
-            }
-          } else {
-            return { error: "Les données de la galerie n'ont pas été chargées." };
-          }
-          return null;
-        },
       },
     ],
   },
