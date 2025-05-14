@@ -16,21 +16,9 @@ const packageSize = 100;
 const ALL_ART_CACHE_KEY = 'allArt';
 
 async function fetchAllArt(): Promise<Record[]> {
-    let page = 1;
-    let allRecords: Record[] = [];
-    let hasNext = true;
-
-    while (hasNext && page <= 50) {
-        const url = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
-        const { data } = await redaxios.get(url);
-        if (data?.records) {
-            const validArt = data.records.filter((record: Record) => record.primaryimageurl && record.primaryimageurl.trim() !== "");
-            allRecords = [...allRecords, ...validArt];
-        }
-        hasNext = data?.info?.next !== null;
-        page++;
-    }
-    return allRecords;
+    const url = "http://localhost:3001/artworks";
+    const { data } = await redaxios.get(url);
+    return data;
 }
 
 function useAllArtData(enabled: boolean) {
@@ -43,10 +31,11 @@ function useAllArtData(enabled: boolean) {
 }
 
 async function fetchHarvardAPI({ pageParam = 1 }) {
-    const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${pageParam}`;
+    const limit = packageSize;
+    const urlHarvard = `http://localhost:3001/artworks?_page=<span class="math-inline">\{pageParam\}&\_limit\=</span>{limit}`;
     const { data } = await redaxios.get(urlHarvard);
-    const validArt = data.records.filter((record: Record) => record.primaryimageurl && record.primaryimageurl.trim() !== "");
-    return { records: validArt, nextPage: pageParam + 1, hasMore: data.info.next !== null };
+    const hasMore = data.length === limit;
+    return { records: data, nextPage: pageParam + 1, hasMore: hasMore };
 }
 
 function App() {
