@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import { useFilter } from "../../../context/FilterContext.tsx";
 import HarvardMuseumAPIContext from "../../../context/HavardMuseumAPIContext.tsx";
 import type { CategoryOptions } from "../../types/SearchType.tsx";
@@ -39,7 +39,7 @@ function FilterGallery(): React.ReactElement {
     "culture",
   ];
 
-  const categoryOptions: CategoryOptions = {
+  const categoryOptions: CategoryOptions = useMemo(() => ({
     category: [],
     classification: [
       ...new Set(
@@ -47,14 +47,18 @@ function FilterGallery(): React.ReactElement {
               .map((art) => art.classification)
               .filter(Boolean),
       ),
-    ].sort((a, b) => a.localeCompare(b)),
+    ].sort((a, b) => (a as string).localeCompare(b as string)),
     artist: [
       ...new Set(
           artMemo
               .map((art) => art.people?.[0]?.name)
               .filter(Boolean),
       ),
-    ].sort((a, b) => (a || "").localeCompare(b || "")),
+    ].sort((a, b) => {
+      const nameA = a || "";
+      const nameB = b || "";
+      return nameA.localeCompare(nameB);
+    }),
     century: [
       ...new Set(
           artMemo
@@ -68,15 +72,19 @@ function FilterGallery(): React.ReactElement {
               .map((art) => art.medium)
               .filter(Boolean),
       ),
-    ].sort((a, b) => a.localeCompare(b)),
+    ].sort((a, b) => (a as string).localeCompare(b as string)),
     culture: [
       ...new Set(
           artMemo
               .map((art) => art.culture)
               .filter(Boolean),
       ),
-    ].sort((a, b) => a.localeCompare(b)),
-  };
+    ].sort((a, b) => {
+      const cultureA = a || "";
+      const cultureB = b || "";
+      return cultureA.localeCompare(cultureB);
+    }),
+  }), [artMemo]);
 
   return (
       <div className="search-body">

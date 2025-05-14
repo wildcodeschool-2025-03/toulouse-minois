@@ -15,10 +15,13 @@ const classificationB = "Photographs";
 const packageSize = 100;
 
 async function fetchHarvardAPI({ pageParam = 1 }) {
-  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${pageParam}`;
-  const { data } = await redaxios.get(urlHarvard);
-    const validArt = data.records.filter((record: Record) => record.primaryimageurl && record.primaryimageurl.trim() !== "");
-  return { records: validArt, nextPage: pageParam + 1, hasMore: data.info.next !== null };
+    const limit = packageSize;
+    const urlHarvard = `http://localhost:3001/artworks?_page=${pageParam}&_limit=${limit}`;
+    const response = await redaxios.get(urlHarvard);
+    const data = response.data;
+    const totalCount = parseInt(response.headers['x-total-count'] || '0', 10);
+    const hasMore = (pageParam - 1) * limit + data.length < totalCount;
+    return { records: data, nextPage: pageParam + 1, hasMore: hasMore };
 }
 
 function App() {

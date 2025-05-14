@@ -70,9 +70,6 @@ function Gallery() {
     return matchesAllCategories;
   });
 
-  console.log("Résultats filtrés :", filteredArtMemo);
-
-
   const generateSlug = (artistName?: string) => {
     return artistName ? artistName.toLowerCase().replace(/[\s-']/g, '-') : 'unknown-artist';
   };
