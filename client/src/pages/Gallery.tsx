@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useFilter } from "../../context/FilterContext";
 import { Link } from "react-router";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
+import InfiniteScroll from "../components/InfiniteScroll/InfiniteScroll.tsx";
 
 function Gallery() {
   const context = useContext(HarvardMuseumAPIContext);
@@ -12,7 +13,7 @@ function Gallery() {
     return <div>Loading...</div>;
   }
 
-  const { artMemo } = context;
+  const { artMemo, fetchNextPage, hasNextPage, isFetchingNextPage } = context;
 
   const filteredArtMemo = artMemo.filter((art) => {
     let matchesAllCategories = true;
@@ -91,6 +92,11 @@ function Gallery() {
             </div>
           );
       })}
+      <InfiniteScroll
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+      />
     </div>
   );
 }
