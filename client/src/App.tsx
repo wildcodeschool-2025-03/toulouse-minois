@@ -5,6 +5,9 @@ import type { Record } from "./types/HarvardType.tsx";
 import "./stylesheets/normalize.css";
 import "./stylesheets/App.css";
 import "./stylesheets/filter.css";
+import { useQuery } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import redaxios from "redaxios";
 
 const subject = "portrait";
 const classificationA = "Paintings";
@@ -12,23 +15,23 @@ const classificationB = "Photographs";
 const packageSize = 100;
 const page = 1;
 
+async function fetchHarvardAPI() {
+  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
+  const { data } = await redaxios.get(urlHarvard);
+  const validArt = data.records.filter((record: Record) => record.primaryimageurl);
+  return { ...data, records: validArt };
+}
+
 function App() {
-  const [_, setInfo] = useState([]);
-  const [art, setArt] = useState<Record[]>([]);
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
 
-  const harvardMuseumApiFetch = useCallback(async () => {
-    const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
-    const fetchHarvard = await fetch(urlHarvard);
-    const artHarvard = await fetchHarvard.json();
-    setInfo(artHarvard.info);
-    setArt(artHarvard.records);
-  }, []);
+  const { isLoading: isArtLoading, isError: isArtError, data: artHarvardData, error: artError} = useQuery({
+    queryKey: ['harvardArt', subject, classificationA, classificationB, packageSize, page],
+    queryFn: fetchHarvardAPI,
+    staleTime: 15 * 60 * 1000,
+  });
 
-
-  useEffect(() => {
-    harvardMuseumApiFetch();
-  }, [harvardMuseumApiFetch]);
+  const art = artHarvardData?.records || [];
 
   const artMemo = useMemo(() => {
     return art;
@@ -44,30 +47,37 @@ function App() {
   useEffect(() => {
     selectRandomPortrait();
     const interval = setInterval(
-      () => {
-        selectRandomPortrait();
-      },
-      15 * 60 * 1000,
+        () => {
+          selectRandomPortrait();
+        },
+        15 * 60000,
     );
 
     return () => clearInterval(interval);
   }, [selectRandomPortrait]);
 
   return (
-    <HarvardMuseumAPIContext
-      value={{ dailyPortrait, artMemo, art, setArt, checkbox: [] }}
-    >
-      {" "}
-      <nav>
-        <p>Minois</p>
-        <Link to="/">Home</Link>
-        <Link to="/Gallery">Gallery</Link>
-        <Link to="/About">About</Link>
-      </nav>
-      <main>
-        <Outlet />
-      </main>
-    </HarvardMuseumAPIContext>
+      <HarvardMuseumAPIContext
+          value={{
+            dailyPortrait,
+            artMemo,
+            art,
+            checkbox: [],
+          }}
+      >
+        <nav>
+          <p>Minois</p>
+          <Link to="/">Home</Link>
+          <Link to="/gallery">Gallery</Link>
+          <Link to="/about">About</Link>
+        </nav>
+        <main>
+          {isArtLoading ? <p>Minute Papillon</p> : null}
+          {isArtError ? <p>Flute alors ! {artError?.message}</p> : null}
+          {!isArtLoading && !isArtError && <Outlet />}
+        </main>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </HarvardMuseumAPIContext>
   );
 }
 
