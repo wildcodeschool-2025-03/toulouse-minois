@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, ScrollRestoration } from "react-router";
 import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
 import type { Record } from "./types/HarvardType.tsx";
 import "./stylesheets/normalize.css";
@@ -83,6 +83,7 @@ function App() {
                 <Link to="/gallery">Gallery</Link>
                 <Link to="/about">About</Link>
             </nav>
+            <ScrollRestoration />
             <main>
                 {isLoading ? <p>Minute Papillon</p> : null}
                 {isError ? <p>Flute alors ! {error?.message}</p> : null}

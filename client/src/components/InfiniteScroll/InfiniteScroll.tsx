@@ -1,6 +1,12 @@
 import { useRef, useEffect } from "react";
 
-function InfiniteScroll({ fetchNextPage, hasNextPage, isFetchingNextPage }) {
+interface InfiniteScrollProps {
+    fetchNextPage: () => void;
+    hasNextPage: boolean | undefined;
+    isFetchingNextPage: boolean;
+}
+
+function InfiniteScroll({ fetchNextPage, hasNextPage, isFetchingNextPage }: InfiniteScrollProps) {
     const observerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -26,7 +32,7 @@ function InfiniteScroll({ fetchNextPage, hasNextPage, isFetchingNextPage }) {
         };
     }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-    return <div ref={observerRef} style={{ height: "1px" }} />;
+    return <div ref={observerRef} />;
 }
 
 export default InfiniteScroll;
