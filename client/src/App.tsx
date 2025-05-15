@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, ScrollRestoration } from "react-router";
 import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
 import type { Record } from "./types/HarvardType.tsx";
 import "./stylesheets/normalize.css";
@@ -8,6 +8,7 @@ import "./stylesheets/filter.css";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import redaxios from "redaxios";
+import ScrollToTopButton from "./components/ScrollToTopButton/ScrollToTopButton.tsx";
 
 const subject = "portrait";
 const classificationA = "Paintings";
@@ -17,8 +18,15 @@ const packageSize = 100;
 async function fetchHarvardAPI({ pageParam = 1 }) {
   const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${pageParam}`;
   const { data } = await redaxios.get(urlHarvard);
-    const validArt = data.records.filter((record: Record) => record.primaryimageurl && record.primaryimageurl.trim() !== "");
-  return { records: validArt, nextPage: pageParam + 1, hasMore: data.info.next !== null };
+  const validArt = data.records.filter(
+    (record: Record) =>
+      record.primaryimageurl && record.primaryimageurl.trim() !== "",
+  );
+  return {
+    records: validArt,
+    nextPage: pageParam + 1,
+    hasMore: data.info.next !== null,
+  };
 }
 
 function App() {
@@ -31,11 +39,18 @@ function App() {
     error,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage
+    isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['harvardArt', subject, classificationA, classificationB, packageSize],
+    queryKey: [
+      "harvardArt",
+      subject,
+      classificationA,
+      classificationB,
+      packageSize,
+    ],
     queryFn: fetchHarvardAPI,
-    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextPage : undefined),
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.nextPage : undefined,
     initialPageParam: 1,
     staleTime: 15 * 60 * 1000,
   });
@@ -55,42 +70,43 @@ function App() {
 
   useEffect(() => {
     selectRandomPortrait();
-    const interval = setInterval(
-        () => {
-          selectRandomPortrait();
-        },
-        15 * 60000,
-    );
+    const interval = setInterval(() => {
+      selectRandomPortrait();
+    }, 15 * 60000);
 
     return () => clearInterval(interval);
   }, [selectRandomPortrait]);
 
-    return (
-        <HarvardMuseumAPIContext
-            value={{
-                dailyPortrait,
-                artMemo,
-                art,
-                checkbox: [],
-                hasNextPage,
-                isFetchingNextPage,
-                fetchNextPage,
-            }}
-        >
-            <nav>
-                <p>Minois</p>
-                <Link to="/">Home</Link>
-                <Link to="/gallery">Gallery</Link>
-                <Link to="/about">About</Link>
-            </nav>
-            <main>
-                {isLoading ? <p>Minute Papillon</p> : null}
-                {isError ? <p>Flute alors ! {error?.message}</p> : null}
-                {!isLoading && !isError && <Outlet />}
-            </main>
-            <ReactQueryDevtools initialIsOpen={false} />
-        </HarvardMuseumAPIContext>
-    );
+  return (
+    <HarvardMuseumAPIContext
+      value={{
+        dailyPortrait,
+        artMemo,
+        art,
+        checkbox: [],
+        hasNextPage,
+        isFetchingNextPage,
+        fetchNextPage,
+      }}
+    >
+      <nav>
+        <p>Minois</p>
+        <Link to="/">Home</Link>
+        <Link to="/gallery">Gallery</Link>
+        <Link to="/about">About</Link>
+      </nav>
+      <ScrollRestoration />
+      <main>
+        {isLoading ? <p>Minute Papillon</p> : null}
+        {isError ? <p>Flute alors ! {error?.message}</p> : null}
+        {!isLoading && !isError && <Outlet />}
+      </main>
+      <footer>
+        <ScrollToTopButton />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </footer>
+    </HarvardMuseumAPIContext>
+  );
 }
 
 export default App;
