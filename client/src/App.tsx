@@ -7,6 +7,8 @@ import "./stylesheets/App.css";
 import "./stylesheets/filter.css";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { IoClose } from "react-icons/io5";
 import redaxios from "redaxios";
 import ScrollToTopButton from "./components/ScrollToTopButton/ScrollToTopButton.tsx";
 
@@ -16,7 +18,9 @@ const classificationB = "Photographs";
 const packageSize = 100;
 
 async function fetchHarvardAPI({ pageParam = 1 }) {
-  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${pageParam}`;
+  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${
+    import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API
+  }&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${pageParam}`;
   const { data } = await redaxios.get(urlHarvard);
   const validArt = data.records.filter(
     (record: Record) =>
@@ -31,6 +35,7 @@ async function fetchHarvardAPI({ pageParam = 1 }) {
 
 function App() {
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const {
     data,
@@ -68,6 +73,10 @@ function App() {
     }
   }, [art]);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   useEffect(() => {
     selectRandomPortrait();
     const interval = setInterval(() => {
@@ -89,11 +98,32 @@ function App() {
         fetchNextPage,
       }}
     >
-      <nav>
+      <nav className={isMobileMenuOpen ? "mobile-nav-open" : ""}>
         <p>Minois</p>
-        <Link to="/">Home</Link>
-        <Link to="/gallery">Gallery</Link>
-        <Link to="/about">About</Link>
+        <div className="desktop-links">
+          <Link to="/">Home</Link>
+          <Link to="/gallery">Gallery</Link>
+          <Link to="/about">About</Link>
+        </div>
+        <button
+          type="button"
+          className="hamburger-button"
+          onClick={toggleMobileMenu}
+        >
+          {isMobileMenuOpen ? <IoClose /> : <GiHamburgerMenu />}
+        </button>
+
+        <div className="mobile-links">
+          <Link to="/" onClick={toggleMobileMenu}>
+            Home
+          </Link>
+          <Link to="/gallery" onClick={toggleMobileMenu}>
+            Gallery
+          </Link>
+          <Link to="/about" onClick={toggleMobileMenu}>
+            About
+          </Link>
+        </div>
       </nav>
       <ScrollRestoration />
       <main>
