@@ -5,6 +5,7 @@ import type { Record } from "./types/HarvardType.tsx";
 import "./stylesheets/normalize.css";
 import "./stylesheets/App.css";
 import "./stylesheets/filter.css";
+import "./stylesheets/Gallery.css";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";

@@ -119,8 +119,55 @@
   margin-left: 0.75rem;
   list-style: none;
   padding-left: 0;
-  max-height: 8rem;
-  overflow-y: auto;
+  max-height: 21vh;
+  overflow-y: scroll;
+}
+
+@media (min-width: 1181px) {
+  .search-body {
+    position: relative;
+    margin-left: 2vw;
+  }
+
+  .search-button-body {
+    margin: 3vw 0 0 0;
+  }
+
+  .search-reset {
+    margin-left: 12vw;
+  }
+
+  .search-menu {
+    margin-top: 20px;
+  }
+
+  .dropdown-content {
+    width: 20vw;
+    padding: 10px;
+    max-height: 25vh;
+  }
+
+  .search-category {
+    position: relative;
+    margin: 0 2vw 0 0;
+    max-width: 15vw;
+  }
+
+  .checkbox-label {
+    padding: 5px 0 5px 0;
+    font-size: 10pt;
+    max-height: 52px;
+    overflow: hidden;
+  }
+
+  .search-input {
+    width: 80%;
+    margin-bottom: 10px;
+    font-size: 12pt;
+    color: black;
+    border: 2px dashed orange;
+    padding: 2px;
+  }
 }
 
 @media (max-width: 1181px) {
@@ -166,6 +213,10 @@
 @media (max-width: 500px) {
   .search-body {
     position: relative;
+  }
+
+  .search-button-body {
+    margin: 3vw 0 0 0;
   }
 
   .search-button-body {
