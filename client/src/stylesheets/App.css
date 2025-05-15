@@ -137,6 +137,10 @@ nav {
 }
 
 @media (max-width: 1181px) {
+  .gallery {
+    padding-inline: 2vh;
+  }
+
   nav {
     justify-content: space-between;
     padding-right: 5vw;
@@ -152,6 +156,14 @@ nav {
 }
 
 @media (max-width: 500px) {
+  .desktop-links {
+    display: none;
+  }
+
+  .hamburger-button {
+    display: block;
+  }
+
   .case {
     width: 40vw;
     margin: 10px 0;
