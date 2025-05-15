@@ -1,0 +1,115 @@
+{artwork.copyright || "Unknown"}
+{artwork.contextualtextcount || "Unknown"}
+{artwork.creditline || "Unknown"}
+{artwork.accesslevel || "Unknown"}
+{artwork.createdate || "Unknown"}
+{artwork.dateoflastpageview || "Unknown"}
+{artwork.classificationid || "Unknown"}
+{artwork.division || "Unknown"}
+{artwork.markscount || "Unknown"}
+{artwork.publicationcount || "Unknown"}
+{artwork.totaluniquepageviews || "Unknown"}
+{artwork.contact || "Unknown"}
+{artwork.colorcount || "Unknown"}
+{artwork.rank || "Unknown"}
+{artwork.id || "Unknown"}
+{artwork.state || "Unknown"}
+{artwork.verificationleveldescription || "Unknown"}
+{artwork.period || "Unknown"}
+
+// Details for the first image in the 'images' array
+{artwork.images?.[0]?.date || "Unknown"}
+{artwork.images?.[0]?.copyright || "Unknown"}
+{artwork.images?.[0]?.imageid || "Unknown"}
+{artwork.images?.[0]?.idsid || "Unknown"}
+{artwork.images?.[0]?.format || "Unknown"}
+{artwork.images?.[0]?.description || "Unknown"}
+{artwork.images?.[0]?.technique || "Unknown"} // Image file technique, not artwork technique
+{artwork.images?.[0]?.renditionnumber || "Unknown"}
+{artwork.images?.[0]?.displayorder || "Unknown"}
+{artwork.images?.[0]?.baseimageurl || "Unknown"}
+{artwork.images?.[0]?.alttext || "Unknown"}
+{artwork.images?.[0]?.width || "Unknown"}
+{artwork.images?.[0]?.publiccaption || "Unknown"}
+{artwork.images?.[0]?.iiifbaseuri || "Unknown"}
+{artwork.images?.[0]?.height || "Unknown"}
+
+// Details for the first work type in the 'worktypes' array
+{artwork.worktypes?.[0]?.worktypeid || "Unknown"}
+{artwork.worktypes?.[0]?.worktype || "Unknown"}
+
+{artwork.imagecount || "Unknown"}
+{artwork.totalpageviews || "Unknown"}
+{artwork.accessionyear || "Unknown"}
+{artwork.standardreferencenumber || "Unknown"}
+{artwork.signed || "Unknown"}
+{artwork.classification || "Unknown"}
+{artwork.relatedcount || "Unknown"}
+{artwork.verificationlevel || "Unknown"}
+{artwork.primaryimageurl || "Unknown"}
+
+// Note: 'titles' is an array in the API structure, but 'title' is also a top-level string.
+// Using the top-level 'title' as it's most common for primary title.
+{artwork.title || "Unknown"}
+{artwork.titlescount || "Unknown"} // Count of titles in the titles array
+
+{artwork.peoplecount || "Unknown"}
+{artwork.style || "Unknown"}
+{artwork.lastupdate || "Unknown"}
+{artwork.commentary || "Unknown"}
+{artwork.periodid || "Unknown"}
+{artwork.technique || "Unknown"} // Artwork technique (often null if medium is used)
+{artwork.edition || "Unknown"}
+{artwork.description || "Unknown"}
+{artwork.medium || "Unknown"} // Artwork medium
+{artwork.lendingpermissionlevel || "Unknown"}
+
+{artwork.accessionmethod || "Unknown"}
+
+// Details for the first color in the 'colors' array
+{artwork.colors?.[0]?.color || "Unknown"} // Hex code
+{artwork.colors?.[0]?.spectrum || "Unknown"} // Spectrum hex code
+{artwork.colors?.[0]?.hue || "Unknown"} // Hue name
+{artwork.colors?.[0]?.percent || "Unknown"} // Percentage
+{artwork.colors?.[0]?.css3 || "Unknown"} // CSS3 color name or hex
+
+{artwork.provenance || "Unknown"}
+{artwork.groupcount || "Unknown"}
+{artwork.dated || "Unknown"} // Human-readable date
+{artwork.department || "Unknown"}
+{artwork.dateend || "Unknown"} // Numerical end year
+
+// Details for the first person in the 'people' array
+{artwork.people?.[0]?.role || "Unknown"}
+{artwork.people?.[0]?.birthplace || "Unknown"}
+{artwork.people?.[0]?.gender || "Unknown"}
+{artwork.people?.[0]?.displaydate || "Unknown"} // Person's display date (birth-death)
+{artwork.people?.[0]?.prefix || "Unknown"}
+{artwork.people?.[0]?.culture || "Unknown"} // Person's culture
+{artwork.people?.[0]?.displayname || "Unknown"} // Person's display name
+{artwork.people?.[0]?.alphasort || "Unknown"}
+{artwork.people?.[0]?.name || "Unknown"} // Person's raw name
+{artwork.people?.[0]?.personid || "Unknown"}
+{artwork.people?.[0]?.deathplace || "Unknown"}
+{artwork.people?.[0]?.displayorder || "Unknown"}
+
+{artwork.url || "Unknown"} // Main object URL
+{artwork.dateoffirstpageview || "Unknown"}
+{artwork.century || "Unknown"} // Artwork century
+
+{artwork.labeltext || "Unknown"}
+{artwork.datebegin || "Unknown"} // Numerical start year
+{artwork.culture || "Unknown"} // Top-level artwork culture
+{artwork.exhibitioncount || "Unknown"}
+{artwork.imagepermissionlevel || "Unknown"}
+{artwork.mediacount || "Unknown"}
+{artwork.objectid || "Unknown"} // Duplicate of 'id'
+{artwork.techniqueid || "Unknown"} // Artwork technique ID
+
+{artwork.dimensions || "Unknown"}
+
+// Details for the first 'seeAlso' link in the 'seeAlso' array
+{artwork.seeAlso?.[0]?.id || "Unknown"}
+{artwork.seeAlso?.[0]?.type || "Unknown"}
+{artwork.seeAlso?.[0]?.format || "Unknown"}
+{artwork.seeAlso?.[0]?.profile || "Unknown"}
