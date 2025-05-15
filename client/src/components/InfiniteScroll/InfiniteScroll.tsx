@@ -1,32 +1,42 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-function InfiniteScroll({ fetchNextPage, hasNextPage, isFetchingNextPage }) {
-    const observerRef = useRef<HTMLDivElement | null>(null);
+interface InfiniteScrollProps {
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+}
 
-    useEffect(() => {
-        if (!hasNextPage || isFetchingNextPage) return;
+function InfiniteScroll({
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+}: InfiniteScrollProps) {
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    fetchNextPage();
-                }
-            },
-            { threshold: 1.0 }
-        );
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
 
-        if (observerRef.current) {
-            observer.observe(observerRef.current);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
         }
+      },
+      { threshold: 1.0 },
+    );
 
-        return () => {
-            if (observerRef.current) {
-                observer.unobserve(observerRef.current);
-            }
-        };
-    }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
 
-    return <div ref={observerRef} style={{ height: "1px" }} />;
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  return <div ref={observerRef} style={{ height: "1px" }} />;
 }
 
 export default InfiniteScroll;

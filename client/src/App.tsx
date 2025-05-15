@@ -1,49 +1,73 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, ScrollRestoration } from "react-router";
 import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
 import type { Record } from "./types/HarvardType.tsx";
 import "./stylesheets/normalize.css";
 import "./stylesheets/App.css";
 import "./stylesheets/filter.css";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import redaxios from "redaxios";
 
 const subject = "portrait";
 const classificationA = "Paintings";
 const classificationB = "Photographs";
 const packageSize = 100;
-const page = 1;
 
-async function fetchHarvardAPI() {
-  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
+async function fetchHarvardAPI({ pageParam = 1 }) {
+  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${pageParam}`;
   const { data } = await redaxios.get(urlHarvard);
   const validArt = data.records.filter(
-    (record: Record) => record.primaryimageurl,
+    (record: Record) =>
+      record.primaryimageurl && record.primaryimageurl.trim() !== "",
   );
-  return { ...data, records: validArt };
+  return {
+    records: validArt,
+    nextPage: pageParam + 1,
+    hasMore: data.info.next !== null,
+  };
 }
 
 function App() {
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
 
-  const { data: artHarvardData } = useQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: [
       "harvardArt",
       subject,
       classificationA,
       classificationB,
       packageSize,
-      page,
     ],
     queryFn: fetchHarvardAPI,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.nextPage : undefined,
+    initialPageParam: 1,
     staleTime: 15 * 60 * 1000,
   });
 
-  const art = artHarvardData?.records || [];
+  const art = data?.pages.flatMap((page) => page.records) || [];
 
   const artMemo = useMemo(() => {
     return art;
   }, [art]);
+
+  const loadArtwork = (id: string) => {
+    const artworkId = Number.parseInt(id, 10);
+    const artwork = artMemo.find((art: Record) => art.objectid === artworkId);
+    if (artwork) {
+      return { artwork };
+    }
+    return { error: "Les données de la galerie n'ont pas été chargées." };
+  };
 
   const selectRandomPortrait = useCallback(() => {
     if (art?.length > 0) {
@@ -61,33 +85,35 @@ function App() {
     return () => clearInterval(interval);
   }, [selectRandomPortrait]);
 
-  const loadArtwork = (id: string) => {
-    const artworkId = Number.parseInt(id, 10);
-
-    if (artMemo) {
-      const artwork = artMemo.find((art: Record) => art.objectid === artworkId);
-
-      if (artwork) {
-        return { artwork };
-      }
-    }
-    return { error: "Les données de la galerie n'ont pas été chargées." };
-  };
-
   return (
-    <HarvardMuseumAPIContext.Provider
-      value={{ art, dailyPortrait, artMemo, loadArtwork, checkbox: [] }}
+    <HarvardMuseumAPIContext
+      value={{
+        dailyPortrait,
+        artMemo,
+        art,
+        checkbox: [],
+        loadArtwork,
+        hasNextPage,
+        isFetchingNextPage,
+        fetchNextPage,
+      }}
     >
       <nav>
         <p>Minois</p>
         <Link to="/">Home</Link>
-        <Link to="/Gallery">Gallery</Link>
-        <Link to="/About">About</Link>
+        <Link to="/gallery">Gallery</Link>
+        <Link to="/about">About</Link>
       </nav>
+      <ScrollRestoration />
       <main>
-        <Outlet />
+        {isLoading ? <p>Minute Papillon</p> : null}
+        {isError ? <p>Flute alors ! {error?.message}</p> : null}
+        {!isLoading && !isError && <Outlet />}
       </main>
-    </HarvardMuseumAPIContext.Provider>
+      <footer>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </footer>
+    </HarvardMuseumAPIContext>
   );
 }
 
