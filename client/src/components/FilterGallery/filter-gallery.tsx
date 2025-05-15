@@ -100,7 +100,7 @@ function FilterGallery(): React.ReactElement {
                     <input
                       type="text"
                       className="search-input"
-                      placeholder="Rechercher..."
+                      placeholder="Search"
                       value={searchTerms[category] || ""}
                       onChange={(e) => handleSearch(category, e.target.value)}
                     />

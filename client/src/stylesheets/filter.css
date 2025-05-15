@@ -122,3 +122,88 @@
   max-height: 8rem;
   overflow-y: auto;
 }
+
+@media (max-width: 1181px) {
+  .search-button-body {
+    margin-left: 3vw;
+  }
+
+  .search-reset {
+    margin-left: 15vw;
+  }
+
+  .dropdown-content {
+    width: 20vw;
+    padding: 10px;
+  }
+
+  .search-category {
+    width: fit-content;
+  }
+
+  .dropdown-submenu {
+    margin: 0;
+  }
+
+  .checkbox-label {
+    padding: 5px 0 5px 0;
+    margin-left: 10px;
+    font-size: 10pt;
+    max-height: 52px;
+    overflow: hidden;
+  }
+
+  .search-input {
+    width: 90%;
+    margin-bottom: 10px;
+    font-size: 12pt;
+    color: black;
+    border: 2px dashed orange;
+    padding: 2px;
+  }
+}
+
+@media (max-width: 500px) {
+  .search-body {
+    position: relative;
+  }
+
+  .search-button-body {
+    width: 25vw;
+    margin-left: 7vw;
+  }
+
+  .search-reset {
+    margin-left: 38vw;
+  }
+
+  .search-menu {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-top: 20px;
+  }
+
+  .dropdown-content {
+    width: 40vw;
+    padding: 10px;
+  }
+
+  .dropdown-submenu {
+    margin: 0;
+  }
+
+  .checkbox-label {
+    padding: 0 0 10px 0;
+    margin: 0px;
+    font-size: 10pt;
+  }
+
+  .search-input {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 12pt;
+    color: black;
+    border: 2px dashed orange;
+    padding: 2px;
+  }
+}

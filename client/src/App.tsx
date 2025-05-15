@@ -6,7 +6,6 @@ import "./stylesheets/normalize.css";
 import "./stylesheets/App.css";
 import "./stylesheets/filter.css";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import redaxios from "redaxios";
@@ -133,10 +132,12 @@ function App() {
       </main>
       <footer>
         <ScrollToTopButton />
-        <ReactQueryDevtools initialIsOpen={false} />
       </footer>
     </HarvardMuseumAPIContext>
   );
 }
+
+// C'est pas un code mort, juste une mise en retrait d'un outil de dev :p
+// <ReactQueryDevtools initialIsOpen={false} />
 
 export default App;

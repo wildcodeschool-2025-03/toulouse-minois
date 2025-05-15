@@ -40,11 +40,11 @@ footer {
 }
 
 .gallery {
+  width: 100%;
+  margin-top: 2vh;
   display: grid;
   grid-template-columns: auto auto auto auto auto;
-  align-content: center;
   justify-content: space-around;
-  margin: 2vh auto;
   color: firebrick;
 
   .b {
@@ -58,7 +58,7 @@ nav {
   z-index: 1;
   width: 100%;
   background-color: white;
-  justify-content: flex-end; /* Changed to flex-end */
+  justify-content: flex-end;
   align-items: center;
   padding-right: 3vw;
   height: 50px;
@@ -112,6 +112,8 @@ nav {
 
 .mobile-nav-open .mobile-links {
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .hamburger-button {
@@ -125,46 +127,53 @@ nav {
 
 .case {
   display: inline-block;
-  width: 15vw;
+  margin-top: 20px;
 
   img {
-    width: 15vw;
+    width: 17vw;
+    height: 34vh;
+    object-fit: cover;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1181px) {
   nav {
     justify-content: space-between;
     padding-right: 5vw;
   }
 
-  .desktop-links {
-    display: none;
-  }
-
-  .hamburger-button {
-    display: block;
-  }
-
   nav p {
-    flex: 1; /* Allow title to take more space */
+    flex: 1;
+  }
+
+  main {
+    padding-top: 8vh;
   }
 }
 
 @media (max-width: 500px) {
   .case {
-    width: 30vw;
+    width: 40vw;
+    margin: 10px 0;
 
     img {
-      width: 30vw;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
   .gallery {
     grid-template-columns: auto auto;
+    justify-content: space-around;
+    margin: 3vh auto;
   }
 
-  .mobile-links {
-    font-size: 10pt;
+  .mobile-links a {
+    font-size: 12pt;
+  }
+
+  main {
+    padding-top: 7vh;
   }
 }
