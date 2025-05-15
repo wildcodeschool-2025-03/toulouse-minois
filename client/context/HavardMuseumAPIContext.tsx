@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import type { Record } from "../src/types/HarvardType.tsx";
 
-interface HarvardMuseumAPIContextValue {
+const HarvardMuseumAPIContext = createContext<{
   art: Record[];
   dailyPortrait: Record;
   artMemo: Record[];
@@ -9,17 +9,6 @@ interface HarvardMuseumAPIContextValue {
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
   fetchNextPage?: () => void;
-  allArtForFilters?: Record[];
-  isLoading?: boolean;
-  isError?: boolean;
-  error?: any;
-}
-
-const HarvardMuseumAPIContext = createContext<HarvardMuseumAPIContextValue>({
-  art: [],
-  dailyPortrait: {} as Record,
-  artMemo: [],
-  checkbox: [],
-});
+} | null>(null);
 
 export default HarvardMuseumAPIContext;
