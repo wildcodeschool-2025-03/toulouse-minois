@@ -183,36 +183,38 @@ function ArtDetail() {
           )}
         </div>
       </div>
-
-      <div className="same-artist-section">
-        <h2>Same artist</h2>
-        <div className="same-artist-gallery">
-          {sameArtistArtworks.length > 0 ? (
-            sameArtistArtworks.map((relatedArt) => (
-              <Link
-                to={`/${generateSlug(relatedArt.people?.[0]?.displayname)}/${relatedArt.objectid}`}
-                className="gallery-item"
-                key={relatedArt.objectid}
-              >
-                {relatedArt.primaryimageurl ? (
-                  <img
-                    src={relatedArt.primaryimageurl}
-                    alt={relatedArt.title || "Related artwork image"}
-                  />
-                ) : (
-                  <div className="gallery-item placeholder">
-                    {relatedArt.title || relatedArt.objectnumber || "Image"}
-                  </div>
-                )}
-              </Link>
-            ))
-          ) : (
-            <p>No other artworks found by this artist.</p>
-          )}
+      <h2>Same artist</h2>
+      {currentArtistName !== "Unidentified Artist" ? (
+        <div className="same-artist-section">
+          <div className="same-artist-gallery">
+            {sameArtistArtworks.length > 0 ? (
+              sameArtistArtworks.map((relatedArt) => (
+                <Link
+                  to={`/${generateSlug(relatedArt.people?.[0]?.displayname)}/${relatedArt.objectid}`}
+                  className="gallery-item"
+                  key={relatedArt.objectid}
+                >
+                  {relatedArt.primaryimageurl ? (
+                    <img
+                      src={relatedArt.primaryimageurl}
+                      alt={relatedArt.title || "Related artwork image"}
+                    />
+                  ) : (
+                    <div className="gallery-item placeholder">
+                      {relatedArt.title || relatedArt.objectnumber || "Image"}
+                    </div>
+                  )}
+                </Link>
+              ))
+            ) : (
+              <p>No other artworks found by this artist.</p>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <p>No other artworks found by this artist.</p>
+      )}
     </div>
   );
 }
-
 export default ArtDetail;
