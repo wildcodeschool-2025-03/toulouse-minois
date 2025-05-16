@@ -8,6 +8,8 @@ import "./stylesheets/filter.css";
 import { useQuery } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import redaxios from "redaxios";
+import ExhibitionContext from "../context/Exhibitioncontext";
+import type { Exhibition } from "./types/ExhibitionType";
 
 const subject = "portrait";
 const classificationA = "Paintings";
@@ -18,15 +20,30 @@ const page = 1;
 async function fetchHarvardAPI() {
   const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
   const { data } = await redaxios.get(urlHarvard);
-  const validArt = data.records.filter((record: Record) => record.primaryimageurl);
+  const validArt = data.records.filter(
+    (record: Record) => record.primaryimageurl,
+  );
   return { ...data, records: validArt };
 }
 
 function App() {
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
+  const [exhibition, setExhibition] = useState<Exhibition[]>([]);
 
-  const { isLoading: isArtLoading, isError: isArtError, data: artHarvardData, error: artError} = useQuery({
-    queryKey: ['harvardArt', subject, classificationA, classificationB, packageSize, page],
+  const {
+    isLoading: isArtLoading,
+    isError: isArtError,
+    data: artHarvardData,
+    error: artError,
+  } = useQuery({
+    queryKey: [
+      "harvardArt",
+      subject,
+      classificationA,
+      classificationB,
+      packageSize,
+      page,
+    ],
     queryFn: fetchHarvardAPI,
     staleTime: 15 * 60 * 1000,
   });
@@ -46,29 +63,28 @@ function App() {
 
   useEffect(() => {
     selectRandomPortrait();
-    const interval = setInterval(
-        () => {
-          selectRandomPortrait();
-        },
-        15 * 60000,
-    );
+    const interval = setInterval(() => {
+      selectRandomPortrait();
+    }, 15 * 60000);
 
     return () => clearInterval(interval);
   }, [selectRandomPortrait]);
 
   return (
-      <HarvardMuseumAPIContext
-          value={{
-            dailyPortrait,
-            artMemo,
-            art,
-            checkbox: [],
-          }}
-      >
+    <HarvardMuseumAPIContext
+      value={{
+        dailyPortrait,
+        artMemo,
+        art,
+        checkbox: [],
+      }}
+    >
+      <ExhibitionContext.Provider value={{ exhibition, setExhibition }}>
         <nav>
           <p>Minois</p>
           <Link to="/">Home</Link>
           <Link to="/gallery">Gallery</Link>
+          <Link to="/exhibition">Exhibition</Link>
           <Link to="/about">About</Link>
         </nav>
         <main>
@@ -77,7 +93,8 @@ function App() {
           {!isArtLoading && !isArtError && <Outlet />}
         </main>
         <ReactQueryDevtools initialIsOpen={false} />
-      </HarvardMuseumAPIContext>
+      </ExhibitionContext.Provider>
+    </HarvardMuseumAPIContext>
   );
 }
 

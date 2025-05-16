@@ -12,8 +12,6 @@ import Gallery from "./pages/Gallery.tsx";
 import Home from "./pages/Home.tsx";
 import About from "./pages/About.tsx";
 import ArtDetail from "./pages/ArtDetail.tsx";
-import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
-import {useContext} from "react";
 
 // Create router configuration with routes
 const GalleryWrapper = () => (

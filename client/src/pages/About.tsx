@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 function About() {
   return (
       <main style={{ margin: "2vw" }}>
