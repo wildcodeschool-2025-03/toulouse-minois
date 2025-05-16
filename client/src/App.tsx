@@ -11,9 +11,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import redaxios from "redaxios";
-import ExhibitionContext from "../context/Exhibitioncontext";
+import ExhibitionContext from "../context/ExhibitionContext.tsx";
 import ScrollToTopButton from "./components/ScrollToTopButton/ScrollToTopButton.tsx";
-import type { Exhibition } from "./types/ExhibitionType";
+import type { Exhibition } from "./types/ExhibitionType.tsx";
 
 const subject = "portrait";
 const classificationA = "Paintings";
@@ -29,6 +29,7 @@ async function fetchHarvardAPI({ pageParam = 1 }) {
     (record: Record) =>
       record.primaryimageurl && record.primaryimageurl.trim() !== "",
   );
+
   return {
     records: validArt,
     nextPage: pageParam + 1,
