@@ -105,6 +105,7 @@ function App() {
         checkbox: [],
         hasNextPage,
         isFetchingNextPage,
+        loadArtwork,
         fetchNextPage,
       }}
     >
@@ -143,36 +144,6 @@ function App() {
       </main>
       <footer>
         <ScrollToTopButton />
-      </footer>
-    </HarvardMuseumAPIContext>
-  );
-  return (
-    <HarvardMuseumAPIContext
-      value={{
-        dailyPortrait,
-        artMemo,
-        art,
-        checkbox: [],
-        loadArtwork,
-        hasNextPage,
-        isFetchingNextPage,
-        fetchNextPage,
-      }}
-    >
-      <nav>
-        <p>Minois</p>
-        <Link to="/">Home</Link>
-        <Link to="/gallery">Gallery</Link>
-        <Link to="/about">About</Link>
-      </nav>
-      <ScrollRestoration />
-      <main>
-        {isLoading ? <p>Minute Papillon</p> : null}
-        {isError ? <p>Flute alors ! {error?.message}</p> : null}
-        {!isLoading && !isError && <Outlet />}
-      </main>
-      <footer>
-        <ReactQueryDevtools initialIsOpen={false} />
       </footer>
     </HarvardMuseumAPIContext>
   );
