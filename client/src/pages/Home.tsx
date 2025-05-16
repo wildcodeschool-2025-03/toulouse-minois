@@ -1,5 +1,12 @@
 import { useContext } from "react";
+import { Link } from "react-router";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
+
+const generateSlug = (artistName?: string) => {
+  return artistName
+    ? artistName.toLowerCase().replace(/[\s-']/g, "-")
+    : "unknown-artist";
+};
 
 function Home() {
   const context = useContext(HarvardMuseumAPIContext);
@@ -9,18 +16,22 @@ function Home() {
   }
 
   const { dailyPortrait } = context;
+  const artistSlug = generateSlug(dailyPortrait?.people?.[0]?.name);
+  const artworkId = dailyPortrait?.objectid;
 
   return (
     <main style={{ margin: "2vw" }}>
       <div>
         <h1>Portrait of the Day</h1>
-        <img
-          src={dailyPortrait?.primaryimageurl}
-          alt={dailyPortrait?.title}
-          style={{ height: "50vh" }}
-        />
-        <h2>{dailyPortrait?.title}</h2>
-        <p>Artist: {dailyPortrait?.people?.[0]?.name || "Unknown"}</p>
+        <Link to={`/${artistSlug}/${artworkId}`}>
+          <img
+            src={dailyPortrait?.primaryimageurl}
+            alt={dailyPortrait?.title}
+            style={{ height: "50vh" }}
+          />
+          <h2>{dailyPortrait?.title}</h2>
+          <p>Artist: {dailyPortrait?.people?.[0]?.name || "Unknown"}</p>
+        </Link>
       </div>
       <div>
         <h2>Welcome to Minois</h2>

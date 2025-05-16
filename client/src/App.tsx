@@ -67,6 +67,15 @@ function App() {
     return art;
   }, [art]);
 
+  const loadArtwork = (id: string) => {
+    const artworkId = Number.parseInt(id, 10);
+    const artwork = artMemo.find((art: Record) => art.objectid === artworkId);
+    if (artwork) {
+      return { artwork };
+    }
+    return { error: "Les données de la galerie n'ont pas été chargées." };
+  };
+
   const selectRandomPortrait = useCallback(() => {
     if (art?.length > 0) {
       const randomIndex = Math.floor(Math.random() * art.length);
@@ -96,6 +105,7 @@ function App() {
         checkbox: [],
         hasNextPage,
         isFetchingNextPage,
+        loadArtwork,
         fetchNextPage,
       }}
     >

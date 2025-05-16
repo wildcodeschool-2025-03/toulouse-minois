@@ -10,7 +10,7 @@ function Gallery() {
   const { filters } = useFilter();
 
   if (!context) {
-    return <div>Loading...</div>;
+    return <div>Loading.</div>;
   }
 
   const { artMemo, fetchNextPage, hasNextPage, isFetchingNextPage } = context;
