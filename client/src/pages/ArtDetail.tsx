@@ -1,6 +1,12 @@
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
+
+const generateSlug = (artistName?: string) => {
+  return artistName
+    ? artistName.toLowerCase().replace(/[\s-']/g, "-")
+    : "unknown-artist";
+};
 
 function ArtDetail() {
   const { id } = useParams();
@@ -18,59 +24,201 @@ function ArtDetail() {
     return <div>Œuvre non trouvée.</div>;
   }
 
+  const currentArtistName = artwork.people?.[0]?.displayname;
+
+  const sameArtistArtworks = currentArtistName
+    ? artMemo.filter(
+        (art) =>
+          art.objectid !== artwork.objectid &&
+          art.people?.some(
+            (person) => person.displayname === currentArtistName,
+          ),
+      )
+    : [];
+
   return (
-    <div>
-      <img src={artwork.primaryimageurl} alt={artwork.title} />
-      <h1>{artwork.title || "Unknown title"}</h1>
-      <h2>
-        <strong>Work Id :</strong> {artwork.id || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Artist: </strong>
-        {artwork.people?.[0]?.displayname || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Culture: </strong>
-        {artwork.people?.[0]?.culture || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Style :</strong> {artwork.classification || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Period :</strong> {artwork.dated || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Accession year :</strong> {artwork.accessionyear || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Technical :</strong> {artwork.technique || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Medium :</strong> {artwork.medium || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Dimensions :</strong> {artwork.dimensions || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Colors: </strong>{" "}
-        <p>Color count: {artwork.colorcount || "Unknown"}</p>
-        <p>Hexadecimal color code: {artwork.colors?.[0]?.color || "Unknown"}</p>
-        <p>Spectrum color: {artwork.colors?.[0]?.spectrum || "Unknown"}</p>
-        <p>Tint color: {artwork.colors?.[0]?.hue || "Unknown"}</p>
-        <p>Percent color: {artwork.colors?.[0]?.percent || "Unknown"}</p>
-      </h2>
-      <h2>
-        <strong>Division :</strong> {artwork.division || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Credit line :</strong> {artwork.creditline || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Contact :</strong> {artwork.contact || "Unknown"}
-      </h2>
-      <h2>
-        <strong>Copyright :</strong> {artwork.copyright || "Unknown"}
-      </h2>
+    <div className="artwork-container">
+      <div className="main-section">
+        <div className="image-container">
+          {artwork.primaryimageurl ? (
+            <img
+              src={artwork.primaryimageurl}
+              alt={artwork.title || "Artwork image"}
+              className="artwork-image"
+            />
+          ) : (
+            <div className="artwork-image placeholder">No Image Available</div>
+          )}
+        </div>
+
+        <div className="info-container">
+          {artwork.people?.[0]?.displayname && (
+            <h2>Artist: {artwork.people[0].displayname}</h2>
+          )}
+          <h1>{artwork.title || "Unknown Title"}</h1>
+          {artwork.dated && <h2>{artwork.dated}</h2>}
+
+          {artwork.medium && (
+            <p className="medium-description">{artwork.medium}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="info-blocks">
+        {/* Block A: Paint Details */}
+        <div className="info-block">
+          <h3>Paint</h3>
+          {artwork.dated && (
+            <p>
+              <strong>Dated:</strong> {artwork.dated}
+            </p>
+          )}
+          {artwork.dimensions && (
+            <p>
+              <strong>Dimensions:</strong> {artwork.dimensions}
+            </p>
+          )}
+          {artwork.medium && (
+            <p>
+              <strong>Medium:</strong> {artwork.medium}
+            </p>
+          )}
+          {artwork.classification && (
+            <p>
+              <strong>Classification:</strong> {artwork.classification}
+            </p>
+          )}
+          {artwork.century && (
+            <p>
+              <strong>Century:</strong> {artwork.century}
+            </p>
+          )}
+        </div>
+
+        {/* Block B: Contexte Details */}
+        <div className="info-block">
+          <h3>Contexte</h3>
+          {artwork.accessionyear != null && (
+            <p>
+              <strong>Accession Year:</strong> {artwork.accessionyear}
+            </p>
+          )}
+          {artwork.accessionmethod && (
+            <p>
+              <strong>Accession Method:</strong> {artwork.accessionmethod}
+            </p>
+          )}
+          {artwork.creditline && (
+            <p>
+              <strong>Credit Line:</strong> {artwork.creditline}
+            </p>
+          )}
+          {artwork.provenance && (
+            <p>
+              <strong>Provenance:</strong> {artwork.provenance}
+            </p>
+          )}
+        </div>
+
+        {/* Block C: Artist Details */}
+        <div className="info-block">
+          <h3>Artist</h3>
+          {artwork.people?.[0]?.displayname && (
+            <p>
+              <strong>Name:</strong> {artwork.people[0].displayname}
+            </p>
+          )}
+          {artwork.people?.[0]?.role && (
+            <p>
+              <strong>Role:</strong> {artwork.people[0].role}
+            </p>
+          )}
+          {artwork.people?.[0]?.culture && (
+            <p>
+              <strong>Culture:</strong> {artwork.people[0].culture}
+            </p>
+          )}
+          {artwork.people?.[0]?.displaydate && (
+            <p>
+              <strong>Dates:</strong> {artwork.people[0].displaydate}
+            </p>
+          )}
+          {artwork.people?.[0]?.birthplace && (
+            <p>
+              <strong>Birthplace:</strong> {artwork.people[0].birthplace}
+            </p>
+          )}
+          {artwork.people?.[0]?.deathplace && (
+            <p>
+              <strong>Deathplace:</strong> {artwork.people[0].deathplace}
+            </p>
+          )}
+        </div>
+
+        {/* Block D: Conservations Details */}
+        <div className="info-block">
+          <h3>Conservations</h3>
+          {artwork.verificationleveldescription && (
+            <p>
+              <strong>Data Verification Level:</strong>{" "}
+              {artwork.verificationleveldescription}
+            </p>
+          )}
+          {artwork.state && (
+            <p>
+              <strong>Object State:</strong> {artwork.state}
+            </p>
+          )}
+          <p>Note: Specific conservation history not always available.</p>
+        </div>
+
+        {/* Block E: Exhibition Details */}
+        <div className="info-block">
+          <h3>Exhibition</h3>
+          {artwork.exhibitioncount != null && (
+            <p>
+              <strong>Exhibition Count:</strong> {artwork.exhibitioncount}
+            </p>
+          )}
+          {artwork.url && (
+            <p>
+              <strong>Museum Collection URL:</strong>{" "}
+              <a href={artwork.url} target="_blank" rel="noopener noreferrer">
+                {artwork.url}
+              </a>
+            </p>
+          )}
+          <p>Note: Specific exhibition history not always available.</p>
+        </div>
+      </div>
+
+      <div className="same-artist-section">
+        <h2>Same artist</h2>
+        <div className="same-artist-gallery">
+          {sameArtistArtworks.length > 0 ? (
+            sameArtistArtworks.map((relatedArt) => (
+              <Link
+                to={`/${generateSlug(relatedArt.people?.[0]?.displayname)}/${relatedArt.objectid}`}
+                className="gallery-item"
+                key={relatedArt.objectid}
+              >
+                {relatedArt.primaryimageurl ? (
+                  <img
+                    src={relatedArt.primaryimageurl}
+                    alt={relatedArt.title || "Related artwork image"}
+                  />
+                ) : (
+                  <div className="gallery-item placeholder">
+                    {relatedArt.title || relatedArt.objectnumber || "Image"}
+                  </div>
+                )}
+              </Link>
+            ))
+          ) : (
+            <p>No other artworks found by this artist.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

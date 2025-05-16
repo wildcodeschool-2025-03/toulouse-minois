@@ -47,9 +47,8 @@ footer {
   justify-content: space-around;
   color: firebrick;
 
-  .b {
-    font-weight: 600;
-  }
+.b {
+  font-weight: 600;
 }
 
 nav {
@@ -82,6 +81,7 @@ nav {
     font-style: normal;
     font-size: 18pt;
     flex: 1;
+    flex: 1; /* Adjusted flex value */
     margin-left: 2vw;
   }
 }

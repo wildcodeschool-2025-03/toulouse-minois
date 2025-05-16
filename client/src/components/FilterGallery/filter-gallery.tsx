@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useFilter } from "../../../context/FilterContext.tsx";
 import HarvardMuseumAPIContext from "../../../context/HavardMuseumAPIContext.tsx";
 import type { CategoryOptions } from "../../types/SearchType.tsx";
@@ -9,6 +9,7 @@ function FilterGallery(): React.ReactElement {
   const { filters, setFilterValue, resetFilters } = useFilter();
   const [isOpen, setIsOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [searchTerms, setSearchTerms] = useState<{ [key: string]: string }>({});
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -16,6 +17,10 @@ function FilterGallery(): React.ReactElement {
 
   const toggleCategory = (categoryName: string | null) => {
     setOpenCategory(openCategory === categoryName ? null : categoryName);
+  };
+
+  const handleSearch = (category: string, term: string) => {
+    setSearchTerms({ ...searchTerms, [category]: term });
   };
 
   const context = useContext(HarvardMuseumAPIContext);
@@ -34,44 +39,54 @@ function FilterGallery(): React.ReactElement {
     "culture",
   ];
 
-  const categoryOptions: CategoryOptions = {
-    category: [],
-    classification: [
-      ...new Set(
-        artMemo
-          .map((art) => art.classification)
-          .filter(Boolean),
+  const normalizeOption = useCallback((option: string): string => {
+    let normalized = option.trim().toLowerCase();
+    normalized = normalized.startsWith("?")
+      ? normalized.substring(1)
+      : normalized;
+    normalized = normalized.endsWith("?")
+      ? normalized.slice(0, -1)
+      : normalized;
+    return normalized.trim();
+  }, []);
+
+  const generateUniqueNormalizedOptions = useCallback(
+    (values: (string | undefined | null)[]): string[] => {
+      const normalizedValues: { [key: string]: string } = {};
+      const uniqueNormalizedValues: string[] = [];
+
+      for (const value of values.filter(Boolean) as string[]) {
+        const normalized = normalizeOption(value);
+        if (!normalizedValues[normalized]) {
+          normalizedValues[normalized] = value;
+          uniqueNormalizedValues.push(value);
+        }
+      }
+
+      return uniqueNormalizedValues.sort((a, b) => a.localeCompare(b));
+    },
+    [normalizeOption],
+  );
+
+  const categoryOptions: CategoryOptions = useMemo(
+    () => ({
+      category: [],
+      classification: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.classification),
       ),
-    ],
-    artist: [
-      ...new Set(
-        artMemo
-          .map((art) => art.people?.[0]?.name)
-          .filter(Boolean),
+      artist: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.people?.[0]?.name),
       ),
-    ],
-    century: [
-      ...new Set(
-        artMemo
-          .map((art) => art.century)
-          .filter(Boolean),
+      century: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.century),
       ),
-    ],
-    medium: [
-      ...new Set(
-        artMemo
-          .map((art) => art.medium)
-          .filter(Boolean),
+      medium: generateUniqueNormalizedOptions(artMemo.map((art) => art.medium)),
+      culture: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.culture),
       ),
-    ],
-    culture: [
-      ...new Set(
-        artMemo
-          .map((art) => art.culture)
-          .filter(Boolean),
-      ),
-    ],
-  };
+    }),
+    [artMemo, generateUniqueNormalizedOptions],
+  );
 
   return (
     <div className="search-body">
@@ -100,33 +115,61 @@ function FilterGallery(): React.ReactElement {
                   {category}
                 </button>
                 {openCategory === category && (
-                  <ul className="dropdown-submenu">
-                    {categoryOptions[category as keyof CategoryOptions]?.map(
-                      (option) => (
-                        <li key={option as string}>
-                          <label className="checkbox-label">
-                            <input
-                              type="checkbox"
-                              className="checkbox-input"
-                              name={category}
-                              value={option ?? ""}
-                              checked={
-                                filters?.[category]?.[option ?? ""] || false
-                              }
-                              onChange={(event) => {
-                                setFilterValue(
-                                  category,
-                                  option ?? "",
-                                  event.target.checked,
-                                );
-                              }}
-                            />
-                            {option}
-                          </label>
-                        </li>
-                      ),
-                    )}
-                  </ul>
+                  <div className="dropdown-content">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search"
+                      value={searchTerms[category] || ""}
+                      onChange={(e) => handleSearch(category, e.target.value)}
+                    />
+                    <ul className="dropdown-submenu">
+                      {(
+                        categoryOptions[category as keyof CategoryOptions] || []
+                      )
+                        .filter((option) =>
+                          normalizeOption(option as string).includes(
+                            normalizeOption(searchTerms[category] || ""),
+                          ),
+                        )
+                        .sort((a, b) => {
+                          const isCheckedA =
+                            filters?.[category]?.[a as string] || false;
+                          const isCheckedB =
+                            filters?.[category]?.[b as string] || false;
+                          if (isCheckedA && !isCheckedB) {
+                            return -1;
+                          }
+                          if (!isCheckedA && isCheckedB) {
+                            return 1;
+                          }
+                          return (a as string).localeCompare(b as string);
+                        })
+                        .map((option) => (
+                          <li key={option as string}>
+                            <label className="checkbox-label">
+                              <input
+                                type="checkbox"
+                                className="checkbox-input"
+                                name={category}
+                                value={option ?? ""}
+                                checked={
+                                  filters?.[category]?.[option ?? ""] || false
+                                }
+                                onChange={(event) => {
+                                  setFilterValue(
+                                    category,
+                                    option ?? "",
+                                    event.target.checked,
+                                  );
+                                }}
+                              />
+                              {option}
+                            </label>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
                 )}
               </div>
             ))}

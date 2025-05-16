@@ -87,16 +87,14 @@ function Gallery() {
           <div key={art.objectid} className="case">
             <Link to={`/${artistSlug}/${artworkId}`}>
               <img src={art.primaryimageurl} alt={art.title} />
-              <p className={"b"}>{art.title}</p>
-              <p>{art.people?.[0]?.name}</p>
             </Link>
           </div>
         );
       })}
       <InfiniteScroll
-        fetchNextPage={fetchNextPage}
+        fetchNextPage={fetchNextPage || (() => {})}
         hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
+        isFetchingNextPage={isFetchingNextPage ?? false}
       />
     </div>
   );
