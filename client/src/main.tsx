@@ -1,26 +1,24 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Import necessary modules from React and React Router
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-/* ************************************************************************* */
+/* ************************************************************************** */
 // Import the main app component
 import App from "./App.tsx";
 import FilterGallery from "./components/FilterGallery/filter-gallery.tsx";
 import FilterProvider from "./components/FilterProvider/FilterProvider.tsx";
-import Gallery from "./pages/Gallery.tsx";
-import Home from "./pages/Home.tsx";
 import About from "./pages/About.tsx";
 import ArtDetail from "./pages/ArtDetail.tsx";
-import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
-import {useContext} from "react";
+import Gallery from "./pages/Gallery.tsx";
+import Home from "./pages/Home.tsx";
 
 // Create router configuration with routes
 const GalleryWrapper = () => (
-    <FilterProvider>
-      <FilterGallery />
-      <Gallery />
-    </FilterProvider>
+  <FilterProvider>
+    <FilterGallery />
+    <Gallery />
+  </FilterProvider>
 );
 
 const router = createBrowserRouter([
@@ -42,7 +40,6 @@ const router = createBrowserRouter([
       {
         path: "/:artist/:id",
         element: <ArtDetail />,
-
       },
     ],
   },
@@ -54,7 +51,7 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // Désactive le rechargement à la réactivation
+      refetchOnWindowFocus: false,
     },
   },
 });
@@ -67,9 +64,9 @@ if (rootElement == null) {
 
 // Render the app inside the QueryClientProvider, which wraps the RouterProvider
 createRoot(rootElement).render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>,
 );
 
 /**

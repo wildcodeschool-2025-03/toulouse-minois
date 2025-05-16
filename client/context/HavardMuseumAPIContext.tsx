@@ -6,6 +6,9 @@ const HarvardMuseumAPIContext = createContext<{
   dailyPortrait: Record;
   artMemo: Record[];
   checkbox: [];
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  fetchNextPage?: () => void;
 } | null>(null);
 
 export default HarvardMuseumAPIContext;

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useFilter } from "../../../context/FilterContext.tsx";
 import HarvardMuseumAPIContext from "../../../context/HavardMuseumAPIContext.tsx";
 import type { CategoryOptions } from "../../types/SearchType.tsx";
@@ -9,6 +9,7 @@ function FilterGallery(): React.ReactElement {
   const { filters, setFilterValue, resetFilters } = useFilter();
   const [isOpen, setIsOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [searchTerms, setSearchTerms] = useState<{ [key: string]: string }>({});
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -16,6 +17,10 @@ function FilterGallery(): React.ReactElement {
 
   const toggleCategory = (categoryName: string | null) => {
     setOpenCategory(openCategory === categoryName ? null : categoryName);
+  };
+
+  const handleSearch = (category: string, term: string) => {
+    setSearchTerms({ ...searchTerms, [category]: term });
   };
 
   const context = useContext(HarvardMuseumAPIContext);
@@ -34,44 +39,35 @@ function FilterGallery(): React.ReactElement {
     "culture",
   ];
 
-  const categoryOptions: CategoryOptions = {
-    category: [],
-    classification: [
-      ...new Set(
-        artMemo
-          .map((art) => art.classification)
-          .filter(Boolean),
-      ),
-    ],
-    artist: [
-      ...new Set(
-        artMemo
-          .map((art) => art.people?.[0]?.name)
-          .filter(Boolean),
-      ),
-    ],
-    century: [
-      ...new Set(
-        artMemo
-          .map((art) => art.century)
-          .filter(Boolean),
-      ),
-    ],
-    medium: [
-      ...new Set(
-        artMemo
-          .map((art) => art.medium)
-          .filter(Boolean),
-      ),
-    ],
-    culture: [
-      ...new Set(
-        artMemo
-          .map((art) => art.culture)
-          .filter(Boolean),
-      ),
-    ],
-  };
+  const categoryOptions: CategoryOptions = useMemo(
+    () => ({
+      category: [],
+      classification: [
+        ...new Set(artMemo.map((art) => art.classification).filter(Boolean)),
+      ].sort((a, b) => (a as string).localeCompare(b as string)),
+      artist: [
+        ...new Set(artMemo.map((art) => art.people?.[0]?.name).filter(Boolean)),
+      ].sort((a, b) => {
+        const nameA = a || "";
+        const nameB = b || "";
+        return nameA.localeCompare(nameB);
+      }),
+      century: [
+        ...new Set(artMemo.map((art) => art.century).filter(Boolean)),
+      ].sort((a, b) => (a || "").localeCompare(b || "")),
+      medium: [
+        ...new Set(artMemo.map((art) => art.medium).filter(Boolean)),
+      ].sort((a, b) => (a as string).localeCompare(b as string)),
+      culture: [
+        ...new Set(artMemo.map((art) => art.culture).filter(Boolean)),
+      ].sort((a, b) => {
+        const cultureA = a || "";
+        const cultureB = b || "";
+        return cultureA.localeCompare(cultureB);
+      }),
+    }),
+    [artMemo],
+  );
 
   return (
     <div className="search-body">
@@ -100,33 +96,63 @@ function FilterGallery(): React.ReactElement {
                   {category}
                 </button>
                 {openCategory === category && (
-                  <ul className="dropdown-submenu">
-                    {categoryOptions[category as keyof CategoryOptions]?.map(
-                      (option) => (
-                        <li key={option as string}>
-                          <label className="checkbox-label">
-                            <input
-                              type="checkbox"
-                              className="checkbox-input"
-                              name={category}
-                              value={option ?? ""}
-                              checked={
-                                filters?.[category]?.[option ?? ""] || false
-                              }
-                              onChange={(event) => {
-                                setFilterValue(
-                                  category,
-                                  option ?? "",
-                                  event.target.checked,
-                                );
-                              }}
-                            />
-                            {option}
-                          </label>
-                        </li>
-                      ),
-                    )}
-                  </ul>
+                  <div className="dropdown-content">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search"
+                      value={searchTerms[category] || ""}
+                      onChange={(e) => handleSearch(category, e.target.value)}
+                    />
+                    <ul className="dropdown-submenu">
+                      {(
+                        categoryOptions[category as keyof CategoryOptions] || []
+                      )
+                        .filter((option) =>
+                          (option as string)
+                            .toLowerCase()
+                            .includes(
+                              (searchTerms[category] || "").toLowerCase(),
+                            ),
+                        )
+                        .sort((a, b) => {
+                          const isCheckedA =
+                            filters?.[category]?.[a as string] || false;
+                          const isCheckedB =
+                            filters?.[category]?.[b as string] || false;
+                          if (isCheckedA && !isCheckedB) {
+                            return -1;
+                          }
+                          if (!isCheckedA && isCheckedB) {
+                            return 1;
+                          }
+                          return (a as string).localeCompare(b as string);
+                        })
+                        .map((option) => (
+                          <li key={option as string}>
+                            <label className="checkbox-label">
+                              <input
+                                type="checkbox"
+                                className="checkbox-input"
+                                name={category}
+                                value={option ?? ""}
+                                checked={
+                                  filters?.[category]?.[option ?? ""] || false
+                                }
+                                onChange={(event) => {
+                                  setFilterValue(
+                                    category,
+                                    option ?? "",
+                                    event.target.checked,
+                                  );
+                                }}
+                              />
+                              {option}
+                            </label>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
                 )}
               </div>
             ))}
