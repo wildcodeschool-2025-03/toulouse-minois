@@ -171,6 +171,11 @@
 }
 
 @media (max-width: 1181px) {
+  .search-body {
+    position: relative;
+    margin-top: 5vh;
+  }
+
   .search-button-body {
     margin-left: 3vw;
   }
@@ -211,6 +216,11 @@
 }
 
 @media (max-width: 500px) {
+  .search-body {
+    position: relative;
+    margin-top: 0;
+  }
+
   .search-body {
     position: relative;
   }

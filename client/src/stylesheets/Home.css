@@ -1,12 +1,11 @@
 .home-div {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   justify-content: center;
-  min-height: 100vh;
   width: 100vw;
   box-sizing: border-box;
-  margin: 0;
+  margin: 10vh 0;
   padding: 0;
 }
 
@@ -34,7 +33,7 @@
   width: 250px;
   max-width: 100%;
   text-align: center;
-  margin-top: 0, 5rem;
+  margin-top: 0.5rem;
 }
 
 .home-p,
