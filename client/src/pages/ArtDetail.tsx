@@ -53,14 +53,10 @@ function ArtDetail() {
 
         <div className="info-container">
           {artwork.people?.[0]?.displayname && (
-            <h2>Artist: {artwork.people[0].displayname}</h2>
+            <h2>{artwork.people[0].displayname}</h2>
           )}
           <h1>{artwork.title || "Unknown Title"}</h1>
           {artwork.dated && <h2>{artwork.dated}</h2>}
-
-          {artwork.medium && (
-            <p className="medium-description">{artwork.medium}</p>
-          )}
         </div>
       </div>
 
@@ -128,6 +124,11 @@ function ArtDetail() {
               <strong>Name:</strong> {artwork.people[0].displayname}
             </p>
           )}
+          {artwork.people?.[0]?.gender && (
+            <p>
+              <strong>Gender:</strong> {artwork.people?.[0]?.gender}
+            </p>
+          )}
           {artwork.people?.[0]?.role && (
             <p>
               <strong>Role:</strong> {artwork.people[0].role}
@@ -180,15 +181,6 @@ function ArtDetail() {
               <strong>Exhibition Count:</strong> {artwork.exhibitioncount}
             </p>
           )}
-          {artwork.url && (
-            <p>
-              <strong>Museum Collection URL:</strong>{" "}
-              <a href={artwork.url} target="_blank" rel="noopener noreferrer">
-                {artwork.url}
-              </a>
-            </p>
-          )}
-          <p>Note: Specific exhibition history not always available.</p>
         </div>
       </div>
 

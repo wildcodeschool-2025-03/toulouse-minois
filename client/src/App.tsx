@@ -138,8 +138,16 @@ function App() {
       </nav>
       <ScrollRestoration />
       <main>
-        {isLoading ? <p>Minute Papillon</p> : null}
-        {isError ? <p>Flute alors ! {error?.message}</p> : null}
+        {isLoading ? (
+          <div className="centered-container">
+            <p className="animated-text">Minute Papillon</p>
+          </div>
+        ) : null}
+        {isError ? (
+          <div className="centered-container">
+            <p className="animated-text">Flute alors ! {error?.message}</p>
+          </div>
+        ) : null}
         {!isLoading && !isError && <Outlet />}
       </main>
       <footer>
