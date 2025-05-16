@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
+import "../stylesheets/Home.css";
 
 const generateSlug = (artistName?: string) => {
   return artistName
@@ -21,21 +22,24 @@ function Home() {
 
   return (
     <main style={{ margin: "2vw" }}>
-      <div>
-        <h1>Portrait of the Day</h1>
+      <h1 className="home-h1">Portrait of the Day</h1>
+      <div className="home-div">
         <Link to={`/${artistSlug}/${artworkId}`}>
           <img
+            className="home-img"
             src={dailyPortrait?.primaryimageurl}
             alt={dailyPortrait?.title}
             style={{ height: "50vh" }}
           />
-          <h2>{dailyPortrait?.title}</h2>
-          <p>Artist: {dailyPortrait?.people?.[0]?.name || "Unknown"}</p>
+          <h2 className="home-h2">{dailyPortrait?.title}</h2>
+          <p className="home-p">
+            Artist: {dailyPortrait?.people?.[0]?.name || "Unknown"}
+          </p>
         </Link>
       </div>
-      <div>
-        <h2>Welcome to Minois</h2>
-        <p>
+      <div className="home-div">
+        <h2 className="home-h2">Welcome to Minois</h2>
+        <p className="home-p">
           If you are on this website, that's you love art and specificly
           portrait. Cool we too! Through great museum collections that we
           selected, discover or rediscover portraits created by a lot of artists
