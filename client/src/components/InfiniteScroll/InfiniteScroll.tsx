@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 interface InfiniteScrollProps {
   fetchNextPage: () => void;
-  hasNextPage: boolean;
+  hasNextPage: boolean | undefined;
   isFetchingNextPage: boolean;
 }
 

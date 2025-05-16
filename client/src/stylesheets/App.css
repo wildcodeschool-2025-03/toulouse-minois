@@ -39,17 +39,8 @@ footer {
   text-align: right;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  align-content: center;
-  justify-content: space-around;
-  margin: 2vh auto;
-  color: firebrick;
-
-  .b {
-    font-weight: 600;
-  }
+.b {
+  font-weight: 600;
 }
 
 nav {
@@ -58,7 +49,7 @@ nav {
   z-index: 1;
   width: 100%;
   background-color: white;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   padding-right: 3vw;
   height: 50px;
@@ -81,16 +72,79 @@ nav {
     font-weight: 600;
     font-style: normal;
     font-size: 18pt;
-    flex: 20;
+    flex: 1; /* Adjusted flex value */
     margin-left: 2vw;
   }
 }
 
-.case {
-  display: inline-block;
-  width: 15vw;
+.desktop-links {
+  display: flex;
+  gap: 50px;
+  font-size: 6pt;
+}
 
-  img {
-    width: 15vw;
+.mobile-links {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  a {
+    font-size: 16pt;
+  }
+}
+
+.mobile-nav-open .mobile-links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.hamburger-button {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 5px;
+}
+
+@media (max-width: 1181px) {
+  nav {
+    justify-content: space-between;
+    padding-right: 5vw;
+  }
+
+  nav p {
+    flex: 1;
+  }
+
+  main {
+    padding-top: 8vh;
+  }
+}
+
+@media (max-width: 500px) {
+  .desktop-links {
+    display: none;
+  }
+
+  .hamburger-button {
+    display: block;
+  }
+
+  .mobile-links a {
+    font-size: 12pt;
+  }
+
+  main {
+    padding-top: 7vh;
   }
 }
