@@ -11,7 +11,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import redaxios from "redaxios";
+import ExhibitionContext from "../context/Exhibitioncontext";
 import ScrollToTopButton from "./components/ScrollToTopButton/ScrollToTopButton.tsx";
+import type { Exhibition } from "./types/ExhibitionType";
 
 const subject = "portrait";
 const classificationA = "Paintings";
@@ -36,6 +38,7 @@ async function fetchHarvardAPI({ pageParam = 1 }) {
 
 function App() {
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
+  const [exhibition, setExhibition] = useState<Exhibition[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const {
@@ -109,42 +112,45 @@ function App() {
         fetchNextPage,
       }}
     >
-      <nav className={isMobileMenuOpen ? "mobile-nav-open" : ""}>
-        <p>Minois</p>
-        <div className="desktop-links">
-          <Link to="/">Home</Link>
-          <Link to="/gallery">Gallery</Link>
-          <Link to="/about">About</Link>
-        </div>
-        <button
-          type="button"
-          className="hamburger-button"
-          onClick={toggleMobileMenu}
-        >
-          {isMobileMenuOpen ? <IoClose /> : <GiHamburgerMenu />}
-        </button>
+      <ExhibitionContext.Provider value={{ exhibition, setExhibition }}>
+        <nav className={isMobileMenuOpen ? "mobile-nav-open" : ""}>
+          <p>Minois</p>
+          <div className="desktop-links">
+            <Link to="/">Home</Link>
+            <Link to="/gallery">Gallery</Link>
+            <Link to="/exhibition">Exhibition</Link>
+            <Link to="/about">About</Link>
+          </div>
+          <button
+            type="button"
+            className="hamburger-button"
+            onClick={toggleMobileMenu}
+          >
+            {isMobileMenuOpen ? <IoClose /> : <GiHamburgerMenu />}
+          </button>
 
-        <div className="mobile-links">
-          <Link to="/" onClick={toggleMobileMenu}>
-            Home
-          </Link>
-          <Link to="/gallery" onClick={toggleMobileMenu}>
-            Gallery
-          </Link>
-          <Link to="/about" onClick={toggleMobileMenu}>
-            About
-          </Link>
-        </div>
-      </nav>
-      <ScrollRestoration />
-      <main>
-        {isLoading ? <p>Minute Papillon</p> : null}
-        {isError ? <p>Flute alors ! {error?.message}</p> : null}
-        {!isLoading && !isError && <Outlet />}
-      </main>
-      <footer>
-        <ScrollToTopButton />
-      </footer>
+          <div className="mobile-links">
+            <Link to="/" onClick={toggleMobileMenu}>
+              Home
+            </Link>
+            <Link to="/gallery" onClick={toggleMobileMenu}>
+              Gallery
+            </Link>
+            <Link to="/about" onClick={toggleMobileMenu}>
+              About
+            </Link>
+          </div>
+        </nav>
+        <ScrollRestoration />
+        <main>
+          {isLoading ? <p>Minute Papillon</p> : null}
+          {isError ? <p>Flute alors ! {error?.message}</p> : null}
+          {!isLoading && !isError && <Outlet />}
+        </main>
+        <footer>
+          <ScrollToTopButton />
+        </footer>
+      </ExhibitionContext.Provider>
     </HarvardMuseumAPIContext>
   );
 }
