@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useFilter } from "../../../context/FilterContext.tsx";
 import HarvardMuseumAPIContext from "../../../context/HavardMuseumAPIContext.tsx";
 import type { CategoryOptions } from "../../types/SearchType.tsx";
@@ -39,34 +39,53 @@ function FilterGallery(): React.ReactElement {
     "culture",
   ];
 
+  const normalizeOption = useCallback((option: string): string => {
+    let normalized = option.trim().toLowerCase();
+    normalized = normalized.startsWith("?")
+      ? normalized.substring(1)
+      : normalized;
+    normalized = normalized.endsWith("?")
+      ? normalized.slice(0, -1)
+      : normalized;
+    return normalized.trim();
+  }, []);
+
+  const generateUniqueNormalizedOptions = useCallback(
+    (values: (string | undefined | null)[]): string[] => {
+      const normalizedValues: { [key: string]: string } = {};
+      const uniqueNormalizedValues: string[] = [];
+
+      for (const value of values.filter(Boolean) as string[]) {
+        const normalized = normalizeOption(value);
+        if (!normalizedValues[normalized]) {
+          normalizedValues[normalized] = value;
+          uniqueNormalizedValues.push(value);
+        }
+      }
+
+      return uniqueNormalizedValues.sort((a, b) => a.localeCompare(b));
+    },
+    [normalizeOption],
+  );
+
   const categoryOptions: CategoryOptions = useMemo(
     () => ({
       category: [],
-      classification: [
-        ...new Set(artMemo.map((art) => art.classification).filter(Boolean)),
-      ].sort((a, b) => (a as string).localeCompare(b as string)),
-      artist: [
-        ...new Set(artMemo.map((art) => art.people?.[0]?.name).filter(Boolean)),
-      ].sort((a, b) => {
-        const nameA = a || "";
-        const nameB = b || "";
-        return nameA.localeCompare(nameB);
-      }),
-      century: [
-        ...new Set(artMemo.map((art) => art.century).filter(Boolean)),
-      ].sort((a, b) => (a || "").localeCompare(b || "")),
-      medium: [
-        ...new Set(artMemo.map((art) => art.medium).filter(Boolean)),
-      ].sort((a, b) => (a as string).localeCompare(b as string)),
-      culture: [
-        ...new Set(artMemo.map((art) => art.culture).filter(Boolean)),
-      ].sort((a, b) => {
-        const cultureA = a || "";
-        const cultureB = b || "";
-        return cultureA.localeCompare(cultureB);
-      }),
+      classification: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.classification),
+      ),
+      artist: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.people?.[0]?.name),
+      ),
+      century: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.century),
+      ),
+      medium: generateUniqueNormalizedOptions(artMemo.map((art) => art.medium)),
+      culture: generateUniqueNormalizedOptions(
+        artMemo.map((art) => art.culture),
+      ),
     }),
-    [artMemo],
+    [artMemo, generateUniqueNormalizedOptions],
   );
 
   return (
@@ -109,11 +128,9 @@ function FilterGallery(): React.ReactElement {
                         categoryOptions[category as keyof CategoryOptions] || []
                       )
                         .filter((option) =>
-                          (option as string)
-                            .toLowerCase()
-                            .includes(
-                              (searchTerms[category] || "").toLowerCase(),
-                            ),
+                          normalizeOption(option as string).includes(
+                            normalizeOption(searchTerms[category] || ""),
+                          ),
                         )
                         .sort((a, b) => {
                           const isCheckedA =
