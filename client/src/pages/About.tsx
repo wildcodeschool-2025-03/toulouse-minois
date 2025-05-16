@@ -1,8 +1,6 @@
-import { useContext } from "react";
-
 function About() {
   return (
-      <main style={{ margin: "2vw" }}>
+    <main style={{ margin: "2vw" }}>
       <section>
         <h1> About our project</h1>
         <p>
