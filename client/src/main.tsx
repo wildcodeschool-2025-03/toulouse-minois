@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router";
 
-/* ************************************************************************* */
+/* ************************************************************************** */
 // Import the main app component
 import App from "./App.tsx";
 import FilterGallery from "./components/FilterGallery/filter-gallery.tsx";
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // Désactive le rechargement à la réactivation
+      refetchOnWindowFocus: false,
     },
   },
 });

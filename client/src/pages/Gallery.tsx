@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { useFilter } from "../../context/FilterContext";
 import { Link } from "react-router";
+import { useFilter } from "../../context/FilterContext";
 import HarvardMuseumAPIContext from "../../context/HavardMuseumAPIContext.tsx";
+import InfiniteScroll from "../components/InfiniteScroll/InfiniteScroll.tsx";
 
 function Gallery() {
   const context = useContext(HarvardMuseumAPIContext);
@@ -9,10 +10,10 @@ function Gallery() {
   const { filters } = useFilter();
 
   if (!context) {
-    return <div>Loading...</div>;
+    return <div>Loading.</div>;
   }
 
-  const { artMemo } = context;
+  const { artMemo, fetchNextPage, hasNextPage, isFetchingNextPage } = context;
 
   const filteredArtMemo = artMemo.filter((art) => {
     let matchesAllCategories = true;
@@ -71,26 +72,30 @@ function Gallery() {
 
   console.log("Résultats filtrés :", filteredArtMemo);
 
-
   const generateSlug = (artistName?: string) => {
-    return artistName ? artistName.toLowerCase().replace(/[\s-']/g, '-') : 'unknown-artist';
+    return artistName
+      ? artistName.toLowerCase().replace(/[\s-']/g, "-")
+      : "unknown-artist";
   };
 
   return (
     <div className="gallery">
       {filteredArtMemo.map((art) => {
-          const artistSlug = generateSlug(art.people?.[0]?.name);
-          const artworkId = art.objectid;
-          return (
-            <div key={art.objectid} className="case">
-              <Link to={`/${artistSlug}/${artworkId}`}>
-                <img src={art.primaryimageurl} alt={art.title} />
-                <p className={"b"}>{art.title}</p>
-                <p>{art.people?.[0]?.name}</p>
-              </Link>
-            </div>
-          );
+        const artistSlug = generateSlug(art.people?.[0]?.name);
+        const artworkId = art.objectid;
+        return (
+          <div key={art.objectid} className="case">
+            <Link to={`/${artistSlug}/${artworkId}`}>
+              <img src={art.primaryimageurl} alt={art.title} />
+            </Link>
+          </div>
+        );
       })}
+      <InfiniteScroll
+        fetchNextPage={fetchNextPage || (() => {})}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage ?? false}
+      />
     </div>
   );
 }

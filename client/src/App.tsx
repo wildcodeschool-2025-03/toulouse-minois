@@ -1,58 +1,83 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, ScrollRestoration } from "react-router";
 import HarvardMuseumAPIContext from "../context/HavardMuseumAPIContext.tsx";
 import type { Record } from "./types/HarvardType.tsx";
 import "./stylesheets/normalize.css";
 import "./stylesheets/App.css";
 import "./stylesheets/filter.css";
-import { useQuery } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import "./stylesheets/Gallery.css";
+import "./stylesheets/ArtDetails.css";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { IoClose } from "react-icons/io5";
 import redaxios from "redaxios";
 import ExhibitionContext from "../context/Exhibitioncontext";
+import ScrollToTopButton from "./components/ScrollToTopButton/ScrollToTopButton.tsx";
 import type { Exhibition } from "./types/ExhibitionType";
 
 const subject = "portrait";
 const classificationA = "Paintings";
 const classificationB = "Photographs";
 const packageSize = 100;
-const page = 1;
 
-async function fetchHarvardAPI() {
-  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API}&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${page}`;
+async function fetchHarvardAPI({ pageParam = 1 }) {
+  const urlHarvard = `https://api.harvardartmuseums.org/object?apikey=${
+    import.meta.env.VITE_REACT_APP_HARVARD_MUSEUM_API
+  }&q=classification=${classificationA}&q=classification=${classificationB}&keyword=${subject}&size=${packageSize}&page=${pageParam}`;
   const { data } = await redaxios.get(urlHarvard);
   const validArt = data.records.filter(
-    (record: Record) => record.primaryimageurl,
+    (record: Record) =>
+      record.primaryimageurl && record.primaryimageurl.trim() !== "",
   );
-  return { ...data, records: validArt };
+  return {
+    records: validArt,
+    nextPage: pageParam + 1,
+    hasMore: data.info.next !== null,
+  };
 }
 
 function App() {
   const [dailyPortrait, setDailyPortrait] = useState<Record>({} as Record);
   const [exhibition, setExhibition] = useState<Exhibition[]>([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const {
-    isLoading: isArtLoading,
-    isError: isArtError,
-    data: artHarvardData,
-    error: artError,
-  } = useQuery({
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: [
       "harvardArt",
       subject,
       classificationA,
       classificationB,
       packageSize,
-      page,
     ],
     queryFn: fetchHarvardAPI,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.nextPage : undefined,
+    initialPageParam: 1,
     staleTime: 15 * 60 * 1000,
   });
 
-  const art = artHarvardData?.records || [];
+  const art = data?.pages.flatMap((page) => page.records) || [];
 
   const artMemo = useMemo(() => {
     return art;
   }, [art]);
+
+  const loadArtwork = (id: string) => {
+    const artworkId = Number.parseInt(id, 10);
+    const artwork = artMemo.find((art: Record) => art.objectid === artworkId);
+    if (artwork) {
+      return { artwork };
+    }
+    return { error: "Les données de la galerie n'ont pas été chargées." };
+  };
 
   const selectRandomPortrait = useCallback(() => {
     if (art?.length > 0) {
@@ -60,6 +85,10 @@ function App() {
       setDailyPortrait(art[randomIndex]);
     }
   }, [art]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   useEffect(() => {
     selectRandomPortrait();
@@ -77,25 +106,56 @@ function App() {
         artMemo,
         art,
         checkbox: [],
+        hasNextPage,
+        isFetchingNextPage,
+        loadArtwork,
+        fetchNextPage,
       }}
     >
       <ExhibitionContext.Provider value={{ exhibition, setExhibition }}>
-        <nav>
+        <nav className={isMobileMenuOpen ? "mobile-nav-open" : ""}>
           <p>Minois</p>
-          <Link to="/">Home</Link>
-          <Link to="/gallery">Gallery</Link>
-          <Link to="/exhibition">Exhibition</Link>
-          <Link to="/about">About</Link>
+          <div className="desktop-links">
+            <Link to="/">Home</Link>
+            <Link to="/gallery">Gallery</Link>
+            <Link to="/exhibition">Exhibition</Link>
+            <Link to="/about">About</Link>
+          </div>
+          <button
+            type="button"
+            className="hamburger-button"
+            onClick={toggleMobileMenu}
+          >
+            {isMobileMenuOpen ? <IoClose /> : <GiHamburgerMenu />}
+          </button>
+
+          <div className="mobile-links">
+            <Link to="/" onClick={toggleMobileMenu}>
+              Home
+            </Link>
+            <Link to="/gallery" onClick={toggleMobileMenu}>
+              Gallery
+            </Link>
+            <Link to="/about" onClick={toggleMobileMenu}>
+              About
+            </Link>
+          </div>
         </nav>
+        <ScrollRestoration />
         <main>
-          {isArtLoading ? <p>Minute Papillon</p> : null}
-          {isArtError ? <p>Flute alors ! {artError?.message}</p> : null}
-          {!isArtLoading && !isArtError && <Outlet />}
+          {isLoading ? <p>Minute Papillon</p> : null}
+          {isError ? <p>Flute alors ! {error?.message}</p> : null}
+          {!isLoading && !isError && <Outlet />}
         </main>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <footer>
+          <ScrollToTopButton />
+        </footer>
       </ExhibitionContext.Provider>
     </HarvardMuseumAPIContext>
   );
 }
+
+// C'est pas un code mort, juste une mise en retrait d'un outil de dev :p
+// <ReactQueryDevtools initialIsOpen={false} />
 
 export default App;

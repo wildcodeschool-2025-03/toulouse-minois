@@ -25,4 +25,5 @@ dist-ssr
 *.sw?
 
 TestApiChicago.tsx
+TestRenewData.tsx
 \src\pages\Test.tsx
