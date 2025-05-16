@@ -1,46 +1,107 @@
+import "../stylesheets/App.css";
+import "../stylesheets/About.css";
+
 function About() {
   return (
     <main style={{ margin: "2vw" }}>
-      <section>
-        <h1> About our project</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod ut qui
-          est, odio fugiat ipsam ex quam obcaecati, voluptates odit vero nisi
-          nihil corrupti. Id autem laudantium nam ex aspernatur.
+      <div className="about-div">
+        <h1 className="about-h1"> About our project</h1>
+        <p className="about-p">
+          We are a team of three junior developers in full-stack web developer
+          training at Wild Code School. Minois is a project related to our
+          training where we use the React library and create dynamic interfaces
+          that interact with a web API. This site is the design of an online
+          gallery dedicated to the evolution of portraits throughout history. We
+          worked as a team using Agile/Scrum methods and pooled our work through
+          the use of GIT in a professional workflow. We hope that this project,
+          which took less than a month, will satisfy people who are passionate
+          about art and particularly fascinated by portraits.
         </p>
+      </div>
+      <h2 className="about-h2">Staff</h2>
+      <section className="about-section-profile">
+        <article className="about-article">
+          <img
+            className="img-profile"
+            src="./src/Images/logoCamille.jpg"
+            alt="Portrait Camille"
+          />
+          <h3 className="about-h3">Covarel Camille</h3>
+          <p className="about-p-profile">
+            Camille Céleste Covarel, a graphic designer and photographer
+            possessing a keen eye for aesthetics and a profound passion for Art
+            in its myriad forms, spanning from the performing arts to visual
+            creation. I am enthusiastically transitioning into the field of web
+            development, a journey I embarked upon in March 2025. Currently
+            based in the magnificent city of Toulouse, France.
+          </p>
+        </article>
+        <article className="about-article">
+          <img
+            className="img-profile"
+            src="./src/Images/logoClement.jpg"
+            alt="Portrait Clément"
+          />
+          <h3 className="about-h3">Bachimont Clément</h3>
+          <p className="about-p-profile">Ta description ici</p>
+        </article>
+        <article className="about-article">
+          <img
+            className="img-profile"
+            src="./src/Images/PhotoLinkdn.jpg"
+            alt="Portrait Annick"
+          />
+          <h3 className="about-h3">Cayuela Annick</h3>
+          <p className="about-p-profile">
+            Hello, visitor. I'm Annick, 35 years old. I started learning about
+            the world of web development a few months ago, and today I'm
+            expanding my knowledge thanks to Wild Code School and one of our
+            projects, Minois. I hadn't imagined how vast and enriching the world
+            of development was. Through Minois, I hope you'll appreciate the
+            features we've implemented and enjoy learning a little more about
+            the fascinating world of portraits. Don't hesitate to write to me
+            via my Linkedin
+          </p>
+        </article>
       </section>
-      <section>
-        <h2>Staff</h2>
-        <article>
-          <h3>Covarel Camille</h3>
-          <p>
-            Ta description ici Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Rerum, at consequatur dolorum inventore velit,
-            repudiandae culpa tenetur dicta repellat nesciunt illum id. Magnam
-            molestias illum at perferendis perspiciatis sint provident.
-          </p>
-        </article>
-        <article>
-          <h3>Bachimont Clément</h3>
-          <p>
-            Ta description ici Lorem ipsum dolor, sit amet consectetur
-            adipisicing elit. Quia illo quisquam consequatur nulla omnis nostrum
-            in, blanditiis alias voluptates dolorum ipsa vitae facilis,
-            repellat, tempore placeat quibusdam minus dolores ab.
-          </p>
-        </article>
-        <article>
-          <h3>Cayuela Annick</h3>
-          <p>
-            Ta description ici Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Reiciendis sit fugiat eius quo sequi placeat nobis
-            provident similique. Ex cumque et minima aliquam magnam cum facilis
-            suscipit quo labore non.
-          </p>
-        </article>
-      </section>
-      <div>
-        <p>Nos liens réseaux</p>
+      <div className="about-div">
+        <p className="about-p-title">Nos liens réseaux</p>
+        <div className="about-div-linkedin">
+          <img
+            className="logo-linkedin"
+            src="./src/Images/LinkedIn_logo_initials.png"
+            alt="Logo Linkedin"
+          />
+          <ul className="about-ul">
+            <li className="about-li">
+              <a
+                href="https://www.linkedin.com/in/camillecelestecovarel/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Covarel Camille (LinkedIn)
+              </a>
+            </li>
+            <li className="about-li">
+              <a
+                href="https://www.linkedin.com/in/cl%C3%A9ment-bachimont-53822b277/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Bachimont Clément (LinkedIn)
+              </a>
+            </li>
+            <li className="about-li">
+              <a
+                href="https://www.linkedin.com/in/annick-cayuela-ikay/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Cayuela Annick (LinkedIn)
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </main>
   );
