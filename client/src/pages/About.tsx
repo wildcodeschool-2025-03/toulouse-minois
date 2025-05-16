@@ -21,30 +21,37 @@ function About() {
       <h2 className="about-h2">Staff</h2>
       <section className="about-section-profile">
         <article className="about-article">
-          <h3 className="about-h3">Covarel Camille</h3>
           <img
             className="img-profile"
             src="./src/Images/logoCamille.jpg"
             alt="Portrait Camille"
           />
-          <p className="about-p-profile">Ta description ici</p>
+          <h3 className="about-h3">Covarel Camille</h3>
+          <p className="about-p-profile">
+            Camille Céleste Covarel, a graphic designer and photographer
+            possessing a keen eye for aesthetics and a profound passion for Art
+            in its myriad forms, spanning from the performing arts to visual
+            creation. I am enthusiastically transitioning into the field of web
+            development, a journey I embarked upon in March 2025. Currently
+            based in the magnificent city of Toulouse, France.
+          </p>
         </article>
         <article className="about-article">
-          <h3 className="about-h3">Bachimont Clément</h3>
           <img
             className="img-profile"
             src="./src/Images/logoClement.jpg"
             alt="Portrait Clément"
           />
+          <h3 className="about-h3">Bachimont Clément</h3>
           <p className="about-p-profile">Ta description ici</p>
         </article>
         <article className="about-article">
-          <h3 className="about-h3">Cayuela Annick</h3>
           <img
             className="img-profile"
             src="./src/Images/PhotoLinkdn.jpg"
             alt="Portrait Annick"
           />
+          <h3 className="about-h3">Cayuela Annick</h3>
           <p className="about-p-profile">
             Hello, visitor. I'm Annick, 35 years old. I started learning about
             the world of web development a few months ago, and today I'm

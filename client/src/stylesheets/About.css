@@ -24,6 +24,7 @@
   width: 250px;
   max-width: 100%;
   display: block;
+  object-fit: contain;
 }
 
 .about-p-profile {
